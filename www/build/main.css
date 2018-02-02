@@ -25677,3 +25677,26 @@ ion-navbar.toolbar {
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
+
+page-events .float-right {
+  float: right;
+}
+
+page-events .bold {
+  font-weight: bold;
+}
+
+page-home ion-col.address {
+  font-size: 12px !important;
+  color: #96454e;
+}
+
+page-home ion-card-title {
+  font-size: 20px !important;
+}
+
+page-home p.description {
+  font-size: 14px !important;
+  max-height: 60px;
+  overflow: hidden;
+}

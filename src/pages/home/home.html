@@ -3,16 +3,35 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Services</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<ion-content class="card-background-page">
+  <ion-card  *ngFor="let s of services" (click)="openModal(s)">
+    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src='../assets/imgs/dummy_img.jpg';"/>
+    <ion-card-content>
+      <ion-card-title>
+        {{s.title}}
+        </ion-card-title>
+      <p class="description">{{s.description}}</p>
+    </ion-card-content>
+    <ion-row padding>
+      <ion-col class="address">
+          <ion-icon name='ios-pin'></ion-icon>
+          {{s.address}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-right>
+        <button ion-button  clear small color="danger" icon-start>
+          <ion-icon name='share-alt'></ion-icon>
+          More Details
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
 </ion-content>

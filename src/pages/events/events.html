@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Events</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+	<ion-list>
+	  <ion-item *ngFor="let e of events" (click)="openModal(e)">
+	    <ion-thumbnail item-start>
+	      <img src="http://162.144.41.156/~izaapinn/agdemo/assets/img/events/{{e.event_image}}" onError="this.src='../assets/imgs/dummy_img.jpg';"/>
+	    </ion-thumbnail>
+	    <h2>{{e.title}}</h2>
+	    <p><ion-icon name="calendar"></ion-icon> {{e.event_start_date}}</p>
+	  </ion-item>
+	</ion-list>
+</ion-content>
