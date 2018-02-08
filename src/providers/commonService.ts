@@ -22,4 +22,11 @@ export class CommonService {
     return this.http.get(apiUrl+'users/events' ,options).map(res => res.json())
        .toPromise();
   }
+  signupData(form1,form2) {
+    var data = {form1:form1,form2:form2};
+    let headers = new Headers();
+    let options = new RequestOptions({ headers: headers });
+    return this.http.put(apiUrl+'users/signup',data ,options).map(res => res.json())
+       .toPromise();
+  }
 }

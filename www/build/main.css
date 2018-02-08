@@ -25700,3 +25700,124 @@ page-home p.description {
   max-height: 60px;
   overflow: hidden;
 }
+
+page-login ion-content {
+  color: #fff !important;
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url("../assets/imgs/background.jpg");
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/imgs/background.jpg");
+}
+
+page-login .logo {
+  margin: 3em 0 0 auto;
+  text-align: center;
+}
+
+page-login .login-spacing {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+page-login .item-input .label-md {
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+page-login .item-md {
+  background: transparent;
+  color: #fff;
+}
+
+page-login .submit-btn {
+  margin-top: 10px;
+  padding-left: 15px;
+}
+
+page-login .submit-btn button {
+  border-radius: 0px;
+}
+
+page-login .password-icon {
+  float: right;
+  position: relative;
+  color: #fff;
+  font-size: 24px;
+  margin-top: -30px;
+  margin-right: 10px;
+}
+
+page-login .password-icon:before {
+  font-size: 24px;
+}
+
+page-login button[color='danger'], page-login button[color='dark'] {
+  color: #fff;
+}
+
+page-login .login-error p {
+  color: #f86c6c;
+  padding-left: 15px;
+}
+
+page-signup ion-content {
+  color: #fff !important;
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url("../assets/imgs/background.jpg");
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/imgs/background.jpg");
+}
+
+page-signup h4 {
+  font-size: 18px;
+  text-align: center;
+}
+
+page-signup .logo {
+  margin: 1em 0 0 auto;
+  text-align: center;
+}
+
+page-signup .logo img {
+  width: 70px;
+}
+
+page-signup .login-spacing {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+page-signup .item-input .label-md {
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+page-signup .item-md {
+  background: transparent;
+  color: #fff;
+}
+
+page-signup .submit-btn {
+  margin-top: 10px;
+  padding-left: 15px;
+}
+
+page-signup .submit-btn button {
+  border-radius: 0px;
+}
+
+page-signup .login-error p {
+  color: #f86c6c;
+  padding-left: 15px;
+}
+
+page-signup .password-icon {
+  float: right;
+  position: relative;
+  color: #fff;
+  font-size: 24px;
+  margin-top: -30px;
+  margin-right: 10px;
+}
+
+page-signup .password-icon:before {
+  font-size: 24px;
+}

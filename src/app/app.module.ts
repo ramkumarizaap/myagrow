@@ -7,6 +7,8 @@ import { MyApp } from './app.component';
 import { HomePage, ModalContentPage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { EventsPage, EventModalContentPage } from '../pages/events/events';
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +21,9 @@ import {CommonService} from "../providers/commonService";
     HomePage,
     ListPage,
     EventsPage,
+    LoginPage,
     ModalContentPage,
+    SignupPage,
     EventModalContentPage
   ],
   imports: [
@@ -33,7 +37,9 @@ import {CommonService} from "../providers/commonService";
     HomePage,
     ListPage,
     EventsPage,
+    LoginPage,
     ModalContentPage,
+    SignupPage,
     EventModalContentPage
   ],
   providers: [

@@ -1,0 +1,38 @@
+<ion-content>
+	<div class="logo">
+		<img src="../assets/imgs/logo.png">
+	</div>
+	<form [formGroup]="_loginForm" method="post" novalidate>
+		<div class="login-spacing">
+			<ion-item>
+	      <ion-label stacked color="transparent">Email</ion-label>
+	      <ion-input formControlName="email" type="email" [class.invalid]="_loginForm.controls.email.invalid && _loginForm.controls.dirty"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.hasError('required') && _loginForm.controls.email.touched">
+				<p ion-text text-wrap>Please Enter Email-ID</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.invalid  && _loginForm.controls.email.dirty && _loginForm.controls.email.value!=''">
+				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Password</ion-label>
+	      <ion-input formControlName="password" [type]="_passwordInputType" ></ion-input>
+	    </ion-item>
+	    <ion-icon name="{{_passwordIcon}}" (click)="_toggleViewPassword($event)" class="password-icon"></ion-icon>
+	     <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.hasError('required') && _loginForm.controls.password.touched">
+				<p ion-text text-wrap>Please Enter Password</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.invalid  && _loginForm.controls.password.dirty && _loginForm.controls.password.value!=''">
+				<p ion-text text-wrap>Please enter atleast 6 characters.</p>
+			</ion-item>
+	    <p text-right>Forgot Password?</p>
+	    <div class="submit-btn">
+				<button color="danger" ion-button block [disabled]="!_loginForm.valid" type="submit">Login</button>
+			</div>
+			<div class="submit-btn">
+				<button color="dark" ion-button block (click)="_gotoSignup()" type="button">Signup</button>
+			</div>
+	  </div>
+	</form>
+
+</ion-content>

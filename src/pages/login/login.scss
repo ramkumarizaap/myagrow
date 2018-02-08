@@ -1,0 +1,50 @@
+page-login
+{
+	ion-content{
+		color:#fff !important;
+		background:linear-gradient(0deg,rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url('../assets/imgs/background.jpg');
+	}
+	.logo{
+		margin:3em 0 0 auto;
+		text-align:center;
+	}
+	.login-spacing{
+	margin-top:20px;
+	padding:10px;
+	}
+	.item-input .label-md{
+	color:#fff;
+	font-weight:bold;
+	text-transform:uppercase;
+	}
+	.item-md{
+	background:transparent;
+	color:#fff;
+	}
+	.submit-btn
+	{
+		margin-top:10px;
+		padding-left:15px;
+	}
+	.submit-btn button{
+		border-radius: 0px;
+	}
+	.password-icon{
+		float: right;
+		position: relative;
+	color:#fff;
+	font-size:24px;
+	margin-top: -30px;
+	margin-right: 10px;
+	
+}
+.password-icon:before{font-size:24px;}
+	button[color='danger'],button[color='dark']
+	{
+		color:#fff;
+	}
+	.login-error p{
+		color: #f86c6c;
+		padding-left: 15px;
+	}
+}
