@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams,ViewController,ModalController ,NavController,ActionSheetController,LoadingController,AlertController  } from 'ionic-angular';
+import { Platform,MenuController,NavParams,ViewController,ModalController ,NavController,ActionSheetController,LoadingController,AlertController  } from 'ionic-angular';
 import { CommonService } from '../../providers/commonService';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { GoogleMaps, GoogleMap, GoogleMapOptions,GoogleMapsEvent} from '@ionic-native/google-maps';
@@ -13,11 +13,15 @@ export class EventsPage {
   constructor(public navCtrl: NavController,
   	public actionSheetCtrl: ActionSheetController,
 		public commonService:CommonService,
-		// private menu: MenuController,
+		private menu: MenuController,
 		private alertCtrl: AlertController,
 		private loader:LoadingController,
 		private modalCtrl:ModalController) {
+    this.navCtrl =  navCtrl;
+    this.menu = menu;
+    this.menu.enable(true, 'myMenu');
   	this.getEvents();
+   
   }
 
   private getEvents():void
@@ -45,9 +49,9 @@ export class EventsPage {
   openModal(event_id)
   {
   	var data = {id:event_id};
-  	let modal = this.modalCtrl.create(EventModalContentPage,data);
-		modal.present();
+  	this.navCtrl.push(EventModalContentPage,data);
   }
+  
  }
 
 @Component({
@@ -57,43 +61,57 @@ export class EventsPage {
 export class EventModalContentPage{
 		private event: any;
 		private map: GoogleMap;
-	  constructor(public params: NavParams,public viewCtrl: ViewController,private iab: InAppBrowser) {
+	  constructor(public platform: Platform,public params: NavParams,public viewCtrl: ViewController,private iab: InAppBrowser,
+      private googleMaps: GoogleMaps) {
 			this.event = this.params.get('id');
 			console.log(this.event);
+      setTimeout(() => {
+        this.loadMap();
+      }, 2000);
+  }
+  loadMap()
+  {
+    let mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: 43.0741904,
+          lng: -89.3809802
+        },
+        zoom: 10,
+        tilt: 30
+      }
+    };
+    this.map = GoogleMaps.create('map_canvas', mapOptions);
 
-			let mapOptions: GoogleMapOptions = {
-          camera: {
-            target: {
-              lat: 13.0827,
-              lng:  80.2707
-            },
-            zoom: 18,
-            tilt: 30
-          }
-        };
-      let element = document.getElementById('map');
-      this.map = GoogleMaps.create(element, mapOptions);
-      this.map.one(GoogleMapsEvent.MAP_READY)
-          .then(() => {
-            // Now you can use all methods safely.
-            this.map.addMarker({
-                icon: 'red',
-                visible:true,
-                title:this.event.location,
-                animation: 'DROP',
-                position: {
-                   lat: 13.0827,
-                  lng:  80.2707
-                }
-              })
-              .then(marker => {
+    // Wait the MAP_READY before using any methods.
+    this.map.one(GoogleMapsEvent.MAP_READY)
+      .then(() => {
+        console.log('Map is ready!');
+
+        this.map.addMarker({
+            title: 'Ionic',
+            icon: 'blue',
+            animation: 'DROP',
+            position: {
+              lat: 43.0741904,
+              lng: -89.3809802
+            }
+          })
+          .then(marker => {
+            marker.on(GoogleMapsEvent.MARKER_CLICK)
+              .subscribe(() => {
+                alert('clicked');
               });
-         });
+          });
+
+      });
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
 	}
+
+
 
 	openCalendar(event)
 	{

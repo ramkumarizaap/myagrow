@@ -9,12 +9,12 @@ import { ListPage } from '../pages/list/list';
 import { EventsPage, EventModalContentPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
-
+import { GoogleMaps} from '@ionic-native/google-maps';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import {CommonService} from "../providers/commonService";
-
+import {GlobalVars} from "../providers/globalVars";
 @NgModule({
   declarations: [
     MyApp,
@@ -43,10 +43,12 @@ import {CommonService} from "../providers/commonService";
     EventModalContentPage
   ],
   providers: [
+    GlobalVars,
     StatusBar,
     InAppBrowser,
     SplashScreen,
     CommonService,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

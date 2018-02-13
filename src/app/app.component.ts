@@ -9,27 +9,30 @@ import { EventsPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 
+import {GlobalVars} from "../providers/globalVars";
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  private user:any;
+  rootPage: any = EventsPage;
+  pages: Array<{title: string, component: any,icon:any,visible:any}>;
 
-  rootPage: any = SignupPage;
-
-  pages: Array<{title: string, component: any,icon:any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalvars: GlobalVars) {
     this.initializeApp();
-
+    this.user = this.globalvars.getUserdata();
+    console.log(this.user);
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Services', component: HomePage,icon:'ios-cog' },
-      { title: 'Events', component: EventsPage,icon:'ios-flag' },
-      { title: 'Login', component: ListPage,icon:'ios-log-in' },
-      { title: 'Logout', component: ListPage,icon:'ios-power' },
-    ];
-
+      { title: 'Services', component: HomePage,icon:'ios-cog',visible:true },
+      { title: 'Events', component: EventsPage,icon:'ios-flag',visible:true },
+      { title: 'Logout', component: LoginPage,icon:'ios-power',visible:false }];
+      if(!this.user)
+      {
+        this.pages.push({ title: 'Login', component: LoginPage,icon:'ios-log-in',visible:true });
+      }
   }
 
   initializeApp() {
@@ -45,5 +48,11 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+  _logout(page) {
+    this.globalvars.deleteUserdata();
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+    this.nav.setRoot(LoginPage);
   }
 }

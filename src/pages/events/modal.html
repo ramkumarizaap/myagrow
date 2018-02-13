@@ -1,15 +1,10 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      {{event.title}}
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary"  showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{event.title}}</ion-title>
+  </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list padding>
@@ -20,5 +15,5 @@
     <p>To Date <span class="float-right bold">{{event.event_end_date}}</span></p>
     <button color="danger" ion-button block type="button" (click)="openCalendar(event)">Add to Calendar</button>
   </ion-list>
-  <div #map id="map" style="width: 100%;height: 30%;"></div>
+  <div #map_canvas id="map_canvas" style="width: 100%;height: 50%;"></div>
 </ion-content>

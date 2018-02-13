@@ -11,7 +11,6 @@ import { LoginPage } from '../login/login';
 })
 export class SignupPage {
 	private _signupFormOne:FormGroup;
-	private _signupForm:any;
 	private _signupFormTwo:FormGroup;
 	private formOne:boolean = false;
 	private _passwordInputType: string = "password";

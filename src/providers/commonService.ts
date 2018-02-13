@@ -29,4 +29,10 @@ export class CommonService {
     return this.http.put(apiUrl+'users/signup',data ,options).map(res => res.json())
        .toPromise();
   }
+  login(data) {
+    let headers = new Headers();
+    let options = new RequestOptions({ headers: headers });
+    return this.http.put(apiUrl+'users/login',data ,options).map(res => res.json())
+       .toPromise();
+  }
 }
