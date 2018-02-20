@@ -4,10 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { EventsPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
-import { SignupPage } from '../pages/signup/signup';
 
 import {GlobalVars} from "../providers/globalVars";
 
@@ -17,7 +15,7 @@ import {GlobalVars} from "../providers/globalVars";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   private user:any;
-  rootPage: any = EventsPage;
+  rootPage: any = HomePage;
   pages: Array<{title: string, component: any,icon:any,visible:any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalvars: GlobalVars) {

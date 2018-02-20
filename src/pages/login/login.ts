@@ -5,8 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { regexPatterns } from '../../validators/regexPatterns';
 import { GlobalVars } from '../../providers/globalVars';
 import { SignupPage } from '../signup/signup';
-import { EventsPage } from '../events/events';
-
+import { HomePage } from '../home/home';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -27,7 +26,7 @@ export class LoginPage {
         this.menu = menu;
         this.menu.enable(false, 'myMenu');
       if(this.globalvars.getUserdata())
-        this.navCtrl.setRoot(EventsPage);
+        this.navCtrl.setRoot(HomePage);
 
   	this._loginForm = _formBuilder.group({
       //EMAIL
@@ -75,7 +74,7 @@ export class LoginPage {
         if(result.status=='success')
         {
           this.globalvars.setUserdata(JSON.stringify(result.data));
-          this.navCtrl.setRoot(EventsPage);
+          this.navCtrl.setRoot(HomePage);
         }
         else{
           let alert = this.alertCtrl.create({

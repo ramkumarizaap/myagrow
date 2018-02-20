@@ -19,7 +19,7 @@ export class SignupPage {
 	 		private _formBuilder: FormBuilder,public navCtrl: NavController,
 	 		public commonService: CommonService,private alertCtrl: AlertController,
 		private loader:LoadingController) {
-	 	this._signupFormOne = _formBuilder.group({
+	 	this._signupFormOne = this._formBuilder.group({
 	 		//FIRTSNAME
       firstname: ["",
         Validators.compose([

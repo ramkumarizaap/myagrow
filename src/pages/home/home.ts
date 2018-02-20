@@ -35,6 +35,7 @@ export class HomePage {
           message: result.message,
           buttons: ['Ok']          
         });
+      if(result.status=="error")
   		alert.present();
 
   	},(err) => {

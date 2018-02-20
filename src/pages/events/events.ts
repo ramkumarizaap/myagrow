@@ -64,18 +64,19 @@ export class EventModalContentPage{
 	  constructor(public platform: Platform,public params: NavParams,public viewCtrl: ViewController,private iab: InAppBrowser,
       private googleMaps: GoogleMaps) {
 			this.event = this.params.get('id');
-			console.log(this.event);
+			console.log("Events: "+this.event);
       setTimeout(() => {
-        this.loadMap();
+        this.loadMap(this.event);
       }, 2000);
   }
-  loadMap()
+  loadMap(e)
   {
+    console.log(e);
     let mapOptions: GoogleMapOptions = {
       camera: {
         target: {
-          lat: 43.0741904,
-          lng: -89.3809802
+          lat: e.latitude,
+          lng: e.longitude
         },
         zoom: 10,
         tilt: 30
@@ -89,18 +90,18 @@ export class EventModalContentPage{
         console.log('Map is ready!');
 
         this.map.addMarker({
-            title: 'Ionic',
-            icon: 'blue',
+            title: e.title,
+            icon: 'red',
             animation: 'DROP',
             position: {
-              lat: 43.0741904,
-              lng: -89.3809802
+              lat: e.latitude,
+              lng: e.longitude
             }
           })
           .then(marker => {
             marker.on(GoogleMapsEvent.MARKER_CLICK)
               .subscribe(() => {
-                alert('clicked');
+                // alert('clicked');
               });
           });
 
