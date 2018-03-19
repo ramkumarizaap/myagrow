@@ -30,6 +30,7 @@ export class CommonService {
   }
   signupData(form1,form2) {
     var data = {form1:form1,form2:form2};
+    console.log(data);
     let headers = new Headers();
     let options = new RequestOptions({ headers: headers });
     return this.http.put(apiUrl+'users/signup',data ,options).map(res => res.json())

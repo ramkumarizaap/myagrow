@@ -115,22 +115,17 @@ export class SignupPage {
         ])
       ],
       //WORK EXPERIENCE
-      experience: ["",
-      	Validators.compose([
-      		Validators.pattern('[0-9]*')
-      	])
-      ],
+      experience: [""],
       //PRIMARY SERVICE
       primaryservice: ["",
         Validators.compose([
-          Validators.required
+         Validators.required
         ])
       ],
       //TYPES OF EXPERIENCE
       typeexp: ["",
         Validators.compose([
-          Validators.required,
-          Validators.pattern('[0-9]*')
+         Validators.required
         ])
       ],
       //QUALIFICATON
@@ -172,6 +167,7 @@ export class SignupPage {
 	 	let loading = this.loader.create({
         content: 'Loading...'
       });
+	 	console.log(this._signupFormTwo.valid);
 	 	if(this._signupFormOne.valid && this._signupFormTwo.valid)
 	 	{
 	  	loading.present();
