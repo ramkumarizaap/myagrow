@@ -31,6 +31,7 @@ export class EventsPage {
       });
   	loading.present();
   	this.commonService.getEvents().then((result) => {
+      console.log(result);
   		loading.dismiss();
   		console.log(result);
   		this.events = result.data;

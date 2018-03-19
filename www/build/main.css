@@ -25759,6 +25759,20 @@ page-login .login-error p {
   padding-left: 15px;
 }
 
+page-profile .submit-btn, page-profile form {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+page-profile .submit-btn {
+  margin-top: 20px;
+}
+
+page-profile .login-error p {
+  color: #f86c6c;
+  padding-left: 15px;
+}
+
 page-signup ion-content {
   color: #fff !important;
   background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url("../assets/imgs/background.jpg");

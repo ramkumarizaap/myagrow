@@ -9,7 +9,7 @@
 
 <ion-content class="card-background-page">
   <ion-card  *ngFor="let s of services" (click)="openModal(s)">
-    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src='../assets/imgs/dummy_img.jpg';"/>
+    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src='assets/imgs/dummy_img.jpg';"/>
     <ion-card-content>
       <ion-card-title>
         {{s.title}}

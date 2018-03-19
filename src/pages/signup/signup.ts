@@ -15,10 +15,24 @@ export class SignupPage {
 	private formOne:boolean = false;
 	private _passwordInputType: string = "password";
   private _passwordIcon : string = "eye-off";
+  public country:any;
+  public state:any;
 	 constructor(
 	 		private _formBuilder: FormBuilder,public navCtrl: NavController,
 	 		public commonService: CommonService,private alertCtrl: AlertController,
 		private loader:LoadingController) {
+     this.commonService.getCountry().then((res)=>{
+         this.country = res.country.data;
+         this.state = res.state.data;
+         console.log(res);
+     }).catch((err)=>{
+       let alert = this.alertCtrl.create({
+          title:'Error',
+          message: 'Failed to fetch data',
+          buttons: ['Ok'],
+          });
+          alert.present();
+     });
 	 	this._signupFormOne = this._formBuilder.group({
 	 		//FIRTSNAME
       firstname: ["",

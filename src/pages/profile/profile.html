@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<form  [formGroup]="_profileForm" method="post" novalidate (submit)="_saveProfile()">
+		<ion-input formControlName="id" type="hidden"></ion-input>
+		<div class="login-spacing">
+			<ion-item>
+	      <ion-label stacked color="transparent">Firstname</ion-label>
+	      <ion-input formControlName="firstname" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.firstname.hasError('required') && _profileForm.controls.firstname.touched">
+				<p ion-text text-wrap>Please Enter Firstname</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Lastname</ion-label>
+	      <ion-input formControlName="lastname" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.lastname.hasError('required') && _profileForm.controls.lastname.touched">
+				<p ion-text text-wrap>Please Enter Lastname</p>
+			</ion-item>
+			<ion-item>
+	      <ion-label stacked color="transparent">Phone</ion-label>
+	      <ion-input formControlName="phone" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError('required') && _profileForm.controls.phone.touched">
+				<p ion-text text-wrap>Please Enter Phone</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError('pattern') && _profileForm.controls.phone.dirty && _profileForm.controls.phone.value!=''">
+				<p ion-text text-wrap>Please Enter Numbers Only</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError('minlength') && _profileForm.controls.phone.touched">
+				<p ion-text text-wrap>Minimum 9 Characters</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Email</ion-label>
+	      <ion-input formControlName="email" type="email"></ion-input>
+	    </ion-item>
+	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.hasError('required') && _profileForm.controls.email.touched">
+				<p ion-text text-wrap>Please Enter Email-ID</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.invalid  && _profileForm.controls.email.dirty && _profileForm.controls.email.value!=''">
+				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Password</ion-label>
+	      <ion-input formControlName="password" type="password"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.password.hasError('required') && _profileForm.controls.password.touched">
+				<p ion-text text-wrap>Please Enter Password</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Address 1</ion-label>
+	      <ion-input formControlName="address1" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.address1.hasError('required') && _profileForm.controls.address1.touched">
+				<p ion-text text-wrap>Please Enter Address 1</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Address 2</ion-label>
+	      <ion-input formControlName="address2" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">City</ion-label>
+	      <ion-input formControlName="city" type="text"></ion-input>
+	    </ion-item>
+	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError('required') && _profileForm.controls.city.touched">
+				<p ion-text text-wrap>Please Enter City</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">State</ion-label>
+	      <ion-select formControlName="state">
+	      	<ion-option *ngFor="let s of state" [value]="s.id">{{s.name}}</ion-option>
+	      </ion-select>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.state.hasError('required') && _profileForm.controls.state.touched">
+				<p ion-text text-wrap>Please Enter State</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Country</ion-label>
+	      <ion-select formControlName="country">
+	      	<ion-option *ngFor="let c of country" [value]="c.id">{{c.name}}</ion-option>
+	      </ion-select>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.country.hasError('required') && _profileForm.controls.country.touched">
+				<p ion-text text-wrap>Please Enter Country</p>
+			</ion-item>
+	    <ion-item>
+	      <ion-label stacked color="transparent">Zipcode</ion-label>
+	      <ion-input type="number" formControlName="zipcode"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError('required') && _profileForm.controls.zipcode.touched">
+				<p ion-text text-wrap>Please Enter Zipcode</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError('pattern') && _profileForm.controls.zipcode.dirty && _profileForm.controls.zipcode.value!=''">
+				<p ion-text text-wrap>Please Enter Numbers Only</p>
+			</ion-item>
+			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError('minlength') && _profileForm.controls.zipcode.touched">
+				<p ion-text text-wrap>Minimum 5 Characters</p>
+			</ion-item>
+	  </div>
+	  <div class="submit-btn">
+			<button color="dark" ion-button block [disabled]="!_profileForm.valid"  type="submit">Save</button>
+		</div>
+	</form>
+</ion-content>

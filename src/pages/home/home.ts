@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams,ViewController,ModalController ,NavController,ActionSheetController,LoadingController,AlertController  } from 'ionic-angular';
+import { MenuController,NavParams,ViewController,ModalController ,NavController,ActionSheetController,LoadingController,AlertController  } from 'ionic-angular';
 import { CommonService } from '../../providers/commonService';
 
 @Component({
@@ -12,10 +12,11 @@ export class HomePage {
   constructor(public navCtrl: NavController,
   	public actionSheetCtrl: ActionSheetController,
 		public commonService:CommonService,
-		// private menu: MenuController,
+		private menu: MenuController,
 		private alertCtrl: AlertController,
 		private loader:LoadingController,
-		private modalCtrl:ModalController,) {
+		private modalCtrl:ModalController) {
+    this.menu.enable(true);
   	this.getServices();
   }
 

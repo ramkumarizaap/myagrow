@@ -8,27 +8,27 @@
   },
   "installed_plugins": {
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-ionic-keyboard": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.ionic.starter"
+      "PACKAGE_NAME": "com.myagrow.agriculture"
     },
     "cordova-plugin-googlemaps": {
       "API_KEY_FOR_ANDROID": "AIzaSyBzO5rK44qM9KgsAmI20BlLdfPLOQVPB_s",
       "PLAY_SERVICES_VERSION": "11.8.0",
-      "PACKAGE_NAME": "io.ionic.starter"
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
+    "cordova-plugin-ionic-webview": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
     }
   },
   "dependent_plugins": {}

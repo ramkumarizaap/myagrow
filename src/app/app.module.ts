@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 
 import { HomePage, ModalContentPage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { ProfilePage } from '../pages/profile/profile';
 import { EventsPage, EventModalContentPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
@@ -26,7 +27,8 @@ import {GlobalVars} from "../providers/globalVars";
     LoginPage,
     ModalContentPage,
     SignupPage,
-    EventModalContentPage
+    EventModalContentPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import {GlobalVars} from "../providers/globalVars";
     LoginPage,
     ModalContentPage,
     SignupPage,
-    EventModalContentPage
+    EventModalContentPage,
+    ProfilePage
   ],
   providers: [
     GlobalVars,

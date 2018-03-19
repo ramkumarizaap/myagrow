@@ -10,12 +10,10 @@
   <ion-content>
     <ion-list>
       <div *ngFor="let p of pages" >
-        <button menuClose ion-item *ngIf="p.visible" (click)="openPage(p)">
+        <button menuClose ion-item *ngIf="p.title!='Logout'" (click)="openPage(p)">
           <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}
         </button>
-      </div>
-      <div *ngFor="let p of pages" >
-        <button menuClose ion-item *ngIf="!p.visible && user" (click)="_logout()">
+        <button menuClose ion-item *ngIf="p.title=='Logout'" (click)="_logout()">
           <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}
         </button>
       </div>

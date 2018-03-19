@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform,App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
+import { ProfilePage } from '../pages/profile/profile';
 
 import {GlobalVars} from "../providers/globalVars";
 
@@ -16,22 +17,33 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   private user:any;
   rootPage: any = HomePage;
-  pages: Array<{title: string, component: any,icon:any,visible:any}>;
+  pages: Array<{title: string, component: any,icon:string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalvars: GlobalVars) {
+  constructor(public app:App,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalvars: GlobalVars) {
     this.initializeApp();
-    this.user = this.globalvars.getUserdata();
-    console.log(this.user);
+    
+    
+
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Services', component: HomePage,icon:'ios-cog',visible:true },
-      { title: 'Events', component: EventsPage,icon:'ios-flag',visible:true },
-      { title: 'Logout', component: LoginPage,icon:'ios-power',visible:false }];
-      if(!this.user)
+      { title: 'Services', component: HomePage,icon:'ios-cog' },
+      { title: 'Events', component: EventsPage,icon:'ios-flag' },
+      { title: 'Login', component: LoginPage,icon:'ios-power'}
+      ];
+      this.app.viewWillEnter.subscribe(() => { 
+      this.user = this.globalvars.getUserdata();
+      if(this.user)
       {
-        this.pages.push({ title: 'Login', component: LoginPage,icon:'ios-log-in',visible:true });
+         this.pages = [
+              { title: 'Services', component: HomePage,icon:'ios-cog' },
+              { title: 'Events', component: EventsPage,icon:'ios-flag' },
+              { title: 'Profile', component: ProfilePage,icon:'ios-person'},
+              { title: 'Logout', component: LoginPage,icon:'ios-power'}
+              ];
       }
+    });
   }
+
 
   initializeApp() {
     this.platform.ready().then(() => {
