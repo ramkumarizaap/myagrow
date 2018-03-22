@@ -4,10 +4,55 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Services</ion-title>
+    <!--  <ion-icon name="search" (click)="search()"></ion-icon> -->
+     <body background="assets/imgs/weather.jpg" style="margin-left: 126px; margin-top: -40px;">
+      {{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C
+    </body>
+   <!-- <img src="assets/imgs/weather.jpg"><div>{{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C</div> -->
   </ion-navbar>
 </ion-header>
 
 <ion-content class="card-background-page">
+   
+ <form method="post" [formGroup]="_searchForm" novalidate (submit)="search_category()">
+    <div class="login-spacing">
+      <ion-grid>
+       <ion-row>
+        <ion-col col-6>
+         <ion-item>
+            <ion-label stacked color="transparent">Select Category</ion-label>
+            <ion-select formControlName="category">
+               <ion-option *ngFor="let c of category" [value]="c.id">{{c.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+            </ion-col>
+
+          <ion-col col-6>
+             <ion-item>
+                <ion-label stacked color="transparent">Enter Location</ion-label>
+                <ion-input type="text" formControlName="location"></ion-input>
+              </ion-item>
+           </ion-col>
+         </ion-row>
+
+          <ion-row>
+            <ion-col col-6>
+             <ion-item>
+             <ion-label stacked color="transparent">Enter Keyword</ion-label>
+            <ion-input  type="text" formControlName="keywords"></ion-input>
+             </ion-item>
+              </ion-col>
+              
+              <ion-col col-6>
+                  <div class="submit-btn">
+               <button color="dark" ion-button block type="submit">Search</button>
+                 </div>
+              </ion-col> 
+            </ion-row>
+    </ion-grid>
+    </div>
+</form>
+
   <ion-card  *ngFor="let s of services" (click)="openModal(s)">
     <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src='assets/imgs/dummy_img.jpg';"/>
     <ion-card-content>
@@ -31,6 +76,7 @@
       </ion-col>
     </ion-row>
   </ion-card>
+  <ion-item *ngIf="services==null">No Records Found.</ion-item>
   <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll> -->

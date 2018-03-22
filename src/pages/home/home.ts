@@ -1,23 +1,42 @@
 import { Component } from '@angular/core';
 import { MenuController,NavParams,ViewController,ModalController ,NavController,ActionSheetController,LoadingController,AlertController  } from 'ionic-angular';
 import { CommonService } from '../../providers/commonService';
-
+import {  OnInit } from '@angular/core';
+import { FormControl,FormGroup, Validators } from '@angular/forms';
+import { Geolocation } from '@ionic-native/geolocation';
+import { Platform } from 'ionic-angular';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit{
 	private services:any;
 	private count:any = 1;
+  public city;
+  public weather;
+  public _searchForm:FormGroup;
+  public category: any;
   constructor(public navCtrl: NavController,
   	public actionSheetCtrl: ActionSheetController,
 		public commonService:CommonService,
 		private menu: MenuController,
 		private alertCtrl: AlertController,
 		private loader:LoadingController,
-		private modalCtrl:ModalController) {
+		private modalCtrl:ModalController,
+    private platform: Platform, 
+    private geolocation: Geolocation) {
+   
+    this.commonService.getCurrentCity().then((result)=> {
+     //console.log(result);
+      this.city = result.city;
+      this.commonService.getWeather(result).then((weather)=> {
+      // console.log(weather);
+        this.weather = (weather.main.temp-32)*5/9;
+      });
+    });
     this.menu.enable(true);
   	this.getServices();
+   
   }
 
   getServices()
@@ -65,6 +84,59 @@ export class HomePage {
       }
        infiniteScroll.complete();
   }
+   
+   ngOnInit() 
+  {
+     this.commonService.getCategory().then((result)=>{
+         
+        console.log(result.category);
+      this.category = result.category;    
+ 
+     }).catch((err)=>{
+       let alert = this.alertCtrl.create({
+          title:'Error',
+          message: 'Failed to fetch data',
+          buttons: ['Ok'],
+          });
+          alert.present();
+     });
+
+      this._searchForm = new FormGroup({
+    category: new FormControl(''),
+    location: new FormControl(''),
+    keywords: new FormControl('')
+    });
+  }
+
+    search_category()
+   {
+     let load=this.loader.create({
+       content:"Please Wait"
+     });
+     load.present();
+    //console.log(this._searchForm.value);
+    this.commonService.getSearchRecords(this._searchForm.value).then((result)=>{
+         
+        console.log(result);
+        setTimeout(()=>{
+          load.dismiss();
+        this.services = result.retdata;
+
+        },3000);
+       // this.viewCtrl.dismiss();
+
+     }).catch((err)=>{
+       load.dismiss();
+       let alert = this.alertCtrl.create({
+          title:'Error',
+          message: 'Failed to fetch data',
+          buttons: ['Ok'],
+          });
+          alert.present();
+     });
+
+  }
+
 }
 
 @Component({

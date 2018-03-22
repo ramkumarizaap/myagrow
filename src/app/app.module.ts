@@ -17,6 +17,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import {CommonService} from "../providers/commonService";
 import {GlobalVars} from "../providers/globalVars";
+import { Geolocation } from '@ionic-native/geolocation';
+//import { Platform } from 'ionic-angular';
 @NgModule({
   declarations: [
     MyApp,
@@ -27,7 +29,7 @@ import {GlobalVars} from "../providers/globalVars";
     ModalContentPage,
     SignupPage,
     EventModalContentPage,
-    ProfilePage
+    ProfilePage,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,7 @@ import {GlobalVars} from "../providers/globalVars";
     ModalContentPage,
     SignupPage,
     EventModalContentPage,
-    ProfilePage
+    ProfilePage,
   ],
   providers: [
     GlobalVars,
@@ -53,6 +55,8 @@ import {GlobalVars} from "../providers/globalVars";
     SplashScreen,
     CommonService,
     GoogleMaps,
+    Geolocation,
+    //Platform,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

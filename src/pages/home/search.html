@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Search</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<form method="post" [formGroup]="_searchForm" novalidate (submit)="search_category()">
+		<!-- <ion-input formControlName="id" type="hidden"></ion-input> -->
+		<div class="login-spacing">
+	    
+	   <ion-item>
+	      <ion-label stacked color="transparent">Select Category</ion-label>
+	      <ion-select formControlName="category">
+	      	 <ion-option *ngFor="let c of category" [value]="c.id">{{c.name}}</ion-option>
+	      </ion-select>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-label stacked color="transparent">Enter Location</ion-label>
+	      <ion-input formControlName="location"  type="text"></ion-input>
+	    </ion-item>
+	    <!--  <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError('required') && _profileForm.controls.city.touched">
+				<p ion-text text-wrap>Please Enter City</p>
+			</ion-item> -->
+
+			 <ion-item>
+	      <ion-label stacked color="transparent">Enter Keyword</ion-label>
+	      <ion-input formControlName="keywords" type="text"></ion-input>
+	    </ion-item>
+	   <!--   <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError('required') && _profileForm.controls.city.touched">
+				<p ion-text text-wrap>Please Enter City</p>
+			</ion-item> -->
+
+	  </div>
+	  <div class="submit-btn">
+			<button color="dark" ion-button block type="submit">Search</button>
+		</div>
+	</form>
+</ion-content>
