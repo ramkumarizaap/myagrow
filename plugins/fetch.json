@@ -56,5 +56,15 @@
     "variables": {
       "API_KEY_FOR_ANDROID": "AIzaSyBzO5rK44qM9KgsAmI20BlLdfPLOQVPB_s"
     }
+  },
+  "cordova-plugin-geolocation": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-geolocation@4.0.1"
+    },
+    "is_top_level": true,
+    "variables": {
+      "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
+    }
   }
 }
