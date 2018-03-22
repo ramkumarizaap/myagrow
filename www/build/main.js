@@ -6,9 +6,12 @@ webpackJsonp([0],{
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ModalContentPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return SearchPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_commonService__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__ = __webpack_require__(202);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,8 +24,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 var HomePage = (function () {
-    function HomePage(navCtrl, actionSheetCtrl, commonService, menu, alertCtrl, loader, modalCtrl) {
+    function HomePage(navCtrl, actionSheetCtrl, commonService, menu, alertCtrl, loader, modalCtrl, platform, geolocation) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.actionSheetCtrl = actionSheetCtrl;
         this.commonService = commonService;
@@ -30,7 +37,17 @@ var HomePage = (function () {
         this.alertCtrl = alertCtrl;
         this.loader = loader;
         this.modalCtrl = modalCtrl;
+        this.platform = platform;
+        this.geolocation = geolocation;
         this.count = 1;
+        this.commonService.getCurrentCity().then(function (result) {
+            //console.log(result);
+            _this.city = result.city;
+            _this.commonService.getWeather(result).then(function (weather) {
+                // console.log(weather);
+                _this.weather = (weather.main.temp - 32) * 5 / 9;
+            });
+        });
         this.menu.enable(true);
         this.getServices();
     }
@@ -42,7 +59,7 @@ var HomePage = (function () {
         loading.present();
         this.commonService.getServices().then(function (result) {
             loading.dismiss();
-            console.log(result);
+            //console.log(result);
             _this.services = result.data;
             _this.count = 1;
             var alert = _this.alertCtrl.create({
@@ -76,9 +93,13 @@ var HomePage = (function () {
         }
         infiniteScroll.complete();
     };
+    HomePage.prototype.search = function () {
+        var searchModal = this.modalCtrl.create(SearchPage);
+        searchModal.present();
+    };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Services</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content class="card-background-page">\n  <ion-card  *ngFor="let s of services" (click)="openModal(s)">\n    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src=\'assets/imgs/dummy_img.jpg\';"/>\n    <ion-card-content>\n      <ion-card-title>\n        {{s.title}}\n        </ion-card-title>\n      <p class="description">{{s.description}}</p>\n    </ion-card-content>\n    <ion-row padding>\n      <ion-col class="address">\n          <ion-icon name=\'ios-pin\'></ion-icon>\n          {{s.address}}\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col text-right>\n        <button ion-button  clear small color="danger" icon-start>\n          <ion-icon name=\'share-alt\'></ion-icon>\n          More Details\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-card>\n  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll> -->\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Services</ion-title>\n    <!--  <ion-icon name="search" (click)="search()"></ion-icon> -->\n     <body background="assets/imgs/weather.jpg" style="margin-left: 126px; margin-top: -40px;">\n      {{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C\n    </body>\n   <!-- <img src="assets/imgs/weather.jpg"><div>{{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C</div> -->\n  </ion-navbar>\n</ion-header>\n\n<ion-content class="card-background-page">\n   \n <form method="post" [formGroup]="_searchForm" novalidate (submit)="search_category()">\n    <div class="login-spacing">\n      <ion-grid>\n       <ion-row>\n        <ion-col col-6>\n         <ion-item>\n            <ion-label stacked color="transparent">Select Category</ion-label>\n            <ion-select formControlName="category">\n               <ion-option *ngFor="let c of category" [value]="c.id">{{c.name}}</ion-option>\n            </ion-select>\n          </ion-item>\n            </ion-col>\n\n          <ion-col col-6>\n             <ion-item>\n                <ion-label stacked color="transparent">Enter Location</ion-label>\n                <ion-input type="text" formControlName="location"></ion-input>\n              </ion-item>\n           </ion-col>\n         </ion-row>\n\n          <ion-row>\n            <ion-col col-6>\n             <ion-item>\n             <ion-label stacked color="transparent">Enter Keyword</ion-label>\n            <ion-input  type="text" formControlName="keywords"></ion-input>\n             </ion-item>\n              </ion-col>\n              \n              <ion-col col-6>\n                  <div class="submit-btn">\n               <button color="dark" ion-button block type="submit">Search</button>\n                 </div>\n              </ion-col> \n            </ion-row>\n    </ion-grid>\n    </div>\n</form>\n\n  <ion-card  *ngFor="let s of services" (click)="openModal(s)">\n    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src=\'assets/imgs/dummy_img.jpg\';"/>\n    <ion-card-content>\n      <ion-card-title>\n        {{s.title}}\n        </ion-card-title>\n      <p class="description">{{s.description}}</p>\n    </ion-card-content>\n    <ion-row padding>\n      <ion-col class="address">\n          <ion-icon name=\'ios-pin\'></ion-icon>\n          {{s.address}}\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col text-right>\n        <button ion-button  clear small color="danger" icon-start>\n          <ion-icon name=\'share-alt\'></ion-icon>\n          More Details\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-card>\n  <ion-item *ngIf="services==null">No Records Found.</ion-item>\n  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll> -->\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
@@ -86,7 +107,9 @@ var HomePage = (function () {
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */]])
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */]])
     ], HomePage);
     return HomePage;
 }());
@@ -102,11 +125,64 @@ var ModalContentPage = (function () {
         this.viewCtrl.dismiss();
     };
     ModalContentPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\home\modal.html"*/'<ion-header>\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      {{service.title}}\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary"  showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<ion-list padding>\n\n		<p><ion-icon name="pin"></ion-icon> {{service.address}}</p>\n\n		<img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{service.image_name}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n		<button type="button" block ion-button color="secondary">Price : ${{service.price}}</button>\n\n		<p>{{service.description}}</p>\n\n		<ion-item>\n\n		  Phone\n\n		  <ion-badge color="dark" item-end>{{service.phone}}</ion-badge>\n\n		</ion-item>\n\n		<ion-item>\n\n		  Status\n\n		  <ion-badge item-end>{{service.status}}</ion-badge>\n\n		</ion-item>\n\n	</ion-list>\n\n\n\n  <!--<ion-segment [(ngModel)]="desc">\n\n    <ion-segment-button value="add">\n\n      ADD. Info\n\n    </ion-segment-button>\n\n    <ion-segment-button value="products">\n\n      Related Products\n\n    </ion-segment-button>\n\n    <ion-segment-button value="reviews">\n\n      Reviews\n\n    </ion-segment-button>\n\n  </ion-segment>\n\n  <div [ngSwitch]="desc">\n\n  <ion-list *ngSwitchCase="\'add\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-puppy-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Ruby</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n\n\n  <ion-list *ngSwitchCase="\'products\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list *ngSwitchCase="\'reviews\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n</div>-->\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\home\modal.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\modal.html"*/'<ion-header>\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      {{service.title}}\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary"  showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<ion-list padding>\n\n		<p><ion-icon name="pin"></ion-icon> {{service.address}}</p>\n\n		<img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{service.image_name}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n		<button type="button" block ion-button color="secondary">Price : ${{service.price}}</button>\n\n		<p>{{service.description}}</p>\n\n		<ion-item>\n\n		  Phone\n\n		  <ion-badge color="dark" item-end>{{service.phone}}</ion-badge>\n\n		</ion-item>\n\n		<ion-item>\n\n		  Status\n\n		  <ion-badge item-end>{{service.status}}</ion-badge>\n\n		</ion-item>\n\n	</ion-list>\n\n\n\n  <!--<ion-segment [(ngModel)]="desc">\n\n    <ion-segment-button value="add">\n\n      ADD. Info\n\n    </ion-segment-button>\n\n    <ion-segment-button value="products">\n\n      Related Products\n\n    </ion-segment-button>\n\n    <ion-segment-button value="reviews">\n\n      Reviews\n\n    </ion-segment-button>\n\n  </ion-segment>\n\n  <div [ngSwitch]="desc">\n\n  <ion-list *ngSwitchCase="\'add\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-puppy-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Ruby</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n\n\n  <ion-list *ngSwitchCase="\'products\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list *ngSwitchCase="\'reviews\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n</div>-->\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\modal.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */]])
     ], ModalContentPage);
     return ModalContentPage;
+}());
+
+var SearchPage = (function () {
+    function SearchPage(params, viewCtrl, commonService, alertCtrl) {
+        this.params = params;
+        this.viewCtrl = viewCtrl;
+        this.commonService = commonService;
+        this.alertCtrl = alertCtrl;
+    }
+    SearchPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.commonService.getCategory().then(function (result) {
+            console.log(result.category);
+            _this.category = result.category;
+        }).catch(function (err) {
+            var alert = _this.alertCtrl.create({
+                title: 'Error',
+                message: 'Failed to fetch data',
+                buttons: ['Ok'],
+            });
+            alert.present();
+        });
+        this._searchForm = new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormGroup */]({
+            category: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormControl */](''),
+            location: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormControl */](''),
+            keywords: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormControl */]('')
+        });
+    };
+    SearchPage.prototype.search_category = function () {
+        var _this = this;
+        //console.log(this._searchForm.value);
+        this.commonService.getSearchRecords(this._searchForm.value).then(function (result) {
+            console.log(result);
+            _this.services = result.retdata;
+            _this.viewCtrl.dismiss();
+        }).catch(function (err) {
+            var alert = _this.alertCtrl.create({
+                title: 'Error',
+                message: 'Failed to fetch data',
+                buttons: ['Ok'],
+            });
+            alert.present();
+        });
+    };
+    SearchPage.prototype.dismiss = function () {
+        this.viewCtrl.dismiss();
+    };
+    SearchPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\search.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Search</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<form method="post" [formGroup]="_searchForm" novalidate (submit)="search_category()">\n\n		<!-- <ion-input formControlName="id" type="hidden"></ion-input> -->\n\n		<div class="login-spacing">\n\n	    \n\n	   <ion-item>\n\n	      <ion-label stacked color="transparent">Select Category</ion-label>\n\n	      <ion-select formControlName="category">\n\n	      	 <ion-option *ngFor="let c of category" [value]="c.id">{{c.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Enter Location</ion-label>\n\n	      <ion-input formControlName="location"  type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--  <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError(\'required\') && _profileForm.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item> -->\n\n\n\n			 <ion-item>\n\n	      <ion-label stacked color="transparent">Enter Keyword</ion-label>\n\n	      <ion-input formControlName="keywords" type="text"></ion-input>\n\n	    </ion-item>\n\n	   <!--   <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError(\'required\') && _profileForm.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item> -->\n\n\n\n	  </div>\n\n	  <div class="submit-btn">\n\n			<button color="dark" ion-button block type="submit">Search</button>\n\n		</div>\n\n	</form>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\search.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */]])
+    ], SearchPage);
+    return SearchPage;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -119,12 +195,12 @@ var ModalContentPage = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_commonService__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_globalVars__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__signup_signup__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__signup_signup__ = __webpack_require__(206);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home__ = __webpack_require__(102);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -162,15 +238,15 @@ var LoginPage = (function () {
         this._loginForm = _formBuilder.group({
             //EMAIL
             email: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)
                 ])
             ],
             //PASSWORD
-            password: ["", __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
+            password: ["", __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
                     // ,Validators.pattern(regexPatterns.password),
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required,
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(6)
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].minLength(6)
                 ])
             ]
         });
@@ -230,7 +306,7 @@ var LoginPage = (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\login\login.html"*/'<ion-content>\n\n	<div class="logo">\n\n		<img src="assets/imgs/logo.png">\n\n	</div>\n\n	<form [formGroup]="_loginForm" (submit)="_login()" method="post" novalidate>\n\n		<div class="login-spacing">\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email" [class.invalid]="_loginForm.controls.email.invalid && _loginForm.controls.dirty"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.hasError(\'required\') && _loginForm.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.invalid  && _loginForm.controls.email.dirty && _loginForm.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" [type]="_passwordInputType" ></ion-input>\n\n	    </ion-item>\n\n	    <ion-icon name="{{_passwordIcon}}" (click)="_toggleViewPassword($event)" class="password-icon"></ion-icon>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.hasError(\'required\') && _loginForm.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.invalid  && _loginForm.controls.password.dirty && _loginForm.controls.password.value!=\'\'">\n\n				<p ion-text text-wrap>Please enter atleast 6 characters.</p>\n\n			</ion-item>\n\n	    <p text-right>Forgot Password?</p>\n\n	    <div class="submit-btn">\n\n				<button color="danger" ion-button block [disabled]="!_loginForm.valid" type="submit">Login</button>\n\n			</div>\n\n			<div class="submit-btn">\n\n				<button color="dark" ion-button block (click)="_gotoSignup()" type="button">Signup</button>\n\n			</div>\n\n	  </div>\n\n	</form>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\login\login.html"*/
+            selector: 'page-login',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\login\login.html"*/'<ion-content>\n\n	<div class="logo">\n\n		<img src="assets/imgs/logo.png">\n\n	</div>\n\n	<form [formGroup]="_loginForm" (submit)="_login()" method="post" novalidate>\n\n		<div class="login-spacing">\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email" [class.invalid]="_loginForm.controls.email.invalid && _loginForm.controls.dirty"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.hasError(\'required\') && _loginForm.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.email.invalid  && _loginForm.controls.email.dirty && _loginForm.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" [type]="_passwordInputType" ></ion-input>\n\n	    </ion-item>\n\n	    <ion-icon name="{{_passwordIcon}}" (click)="_toggleViewPassword($event)" class="password-icon"></ion-icon>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.hasError(\'required\') && _loginForm.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_loginForm.controls.password.invalid  && _loginForm.controls.password.dirty && _loginForm.controls.password.value!=\'\'">\n\n				<p ion-text text-wrap>Please enter atleast 6 characters.</p>\n\n			</ion-item>\n\n	    <p text-right>Forgot Password?</p>\n\n	    <div class="submit-btn">\n\n				<button color="danger" ion-button block [disabled]="!_loginForm.valid" type="submit">Login</button>\n\n			</div>\n\n			<div class="submit-btn">\n\n				<button color="dark" ion-button block (click)="_gotoSignup()" type="button">Signup</button>\n\n			</div>\n\n	  </div>\n\n	</form>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\login\login.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
@@ -310,17 +386,17 @@ webpackEmptyAsyncContext.id = 158;
 
 /***/ }),
 
-/***/ 202:
+/***/ 203:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EventsPage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventModalContentPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_commonService__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_in_app_browser__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_google_maps__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_in_app_browser__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_google_maps__ = __webpack_require__(205);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -378,7 +454,7 @@ var EventsPage = (function () {
     };
     EventsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-events',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\events\events.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Events</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n	<ion-list>\n\n	  <ion-item *ngFor="let e of events" (click)="openModal(e)">\n\n	    <ion-thumbnail item-start>\n\n	      <img src="http://162.144.41.156/~izaapinn/agdemo/assets/img/events/{{e.event_image}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n	    </ion-thumbnail>\n\n	    <h2>{{e.title}}</h2>\n\n	    <p><ion-icon name="calendar"></ion-icon> {{e.event_start_date}}</p>\n\n	  </ion-item>\n\n	</ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\events\events.html"*/
+            selector: 'page-events',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\events\events.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Events</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n	<ion-list>\n\n	  <ion-item *ngFor="let e of events" (click)="openModal(e)">\n\n	    <ion-thumbnail item-start>\n\n	      <img src="http://162.144.41.156/~izaapinn/agdemo/assets/img/events/{{e.event_image}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n	    </ion-thumbnail>\n\n	    <h2>{{e.title}}</h2>\n\n	    <p><ion-icon name="calendar"></ion-icon> {{e.event_start_date}}</p>\n\n	  </ion-item>\n\n	</ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\events\events.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
@@ -461,7 +537,7 @@ var EventModalContentPage = (function () {
     };
     EventModalContentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-events',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\events\modal.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>{{event.title}}</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <ion-list padding>\n\n    <p><ion-icon name="pin"></ion-icon> {{event.location}}</p>\n\n    <img src="http://162.144.41.156/~izaapinn/agdemo/assets/img/events/{{event.event_image}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n    <p>{{event.description}}</p>\n\n    <p>From Date <span class="float-right bold">{{event.event_start_date}}</span></p>\n\n    <p>To Date <span class="float-right bold">{{event.event_end_date}}</span></p>\n\n    <button color="danger" ion-button block type="button" (click)="openCalendar(event)">Add to Calendar</button>\n\n  </ion-list>\n\n  <div #map_canvas id="map_canvas" style="width: 100%;height: 50%;"></div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\events\modal.html"*/
+            selector: 'page-events',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\events\modal.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>{{event.title}}</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n  <ion-list padding>\n\n    <p><ion-icon name="pin"></ion-icon> {{event.location}}</p>\n\n    <img src="http://162.144.41.156/~izaapinn/agdemo/assets/img/events/{{event.event_image}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n    <p>{{event.description}}</p>\n\n    <p>From Date <span class="float-right bold">{{event.event_start_date}}</span></p>\n\n    <p>To Date <span class="float-right bold">{{event.event_end_date}}</span></p>\n\n    <button color="danger" ion-button block type="button" (click)="openCalendar(event)">Add to Calendar</button>\n\n  </ion-list>\n\n  <div #map_canvas id="map_canvas" style="width: 100%;height: 50%;"></div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\events\modal.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_in_app_browser__["a" /* InAppBrowser */],
             __WEBPACK_IMPORTED_MODULE_4__ionic_native_google_maps__["a" /* GoogleMaps */]])
@@ -473,13 +549,13 @@ var EventModalContentPage = (function () {
 
 /***/ }),
 
-/***/ 205:
+/***/ 206:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SignupPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_commonService__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__ = __webpack_require__(104);
@@ -525,96 +601,96 @@ var SignupPage = (function () {
         this._signupFormOne = this._formBuilder.group({
             //FIRTSNAME
             firstname: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //FIRTSNAME
             lastname: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //EMAIL
             email: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)
                 ])
             ],
             //PASSWORD
             password: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //ADDRESS 1
             address1: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //ADDRESS 2
             address2: [""],
             //COUNTRY
             country: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //STATE
             state: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //CITY
             city: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //ZIPCODE
             zipcode: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required,
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern('[0-9]*'),
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(5),
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern('[0-9]*'),
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].minLength(5),
                 ])
             ],
             //PHONE
             phone: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required,
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern('[0-9]*'),
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(9),
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern('[0-9]*'),
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].minLength(9),
                 ])
             ],
         });
         this._signupFormTwo = _formBuilder.group({
             //BUSINESS NAME
             businessname: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //WEBSITE
             website: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //WORK EXPERIENCE
             experience: [""],
             //PRIMARY SERVICE
             primaryservice: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //TYPES OF EXPERIENCE
             typeexp: ["",
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([
-                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([
+                    __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required
                 ])
             ],
             //QUALIFICATON
@@ -689,25 +765,26 @@ var SignupPage = (function () {
     };
     SignupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-signup',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\signup\signup.html"*/'<ion-content>\n\n	<div class="logo">\n\n		<img src="assets/imgs/logo.png">\n\n	</div>\n\n	<h4>Welcome to myAgrow Registration!</h4>\n\n	<form [formGroup]="_signupFormOne" method="post" novalidate [hidden]="formOne">\n\n		<div class="login-spacing">\n\n			<!--FIRSTNAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Firstname</ion-label>\n\n	      <ion-input formControlName="firstname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.firstname.hasError(\'required\') && _signupFormOne.controls.firstname.touched">\n\n				<p ion-text text-wrap>Please Enter Firstname</p>\n\n			</ion-item>\n\n	    <!--FIRSTNAME END-->\n\n	    <!--LASTNAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Lastname</ion-label>\n\n	      <ion-input formControlName="lastname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.lastname.hasError(\'required\') && _signupFormOne.controls.lastname.touched">\n\n				<p ion-text text-wrap>Please Enter Lastname</p>\n\n			</ion-item>\n\n	    <!--LASTNAME END-->\n\n			<!--EMAIL START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.email.hasError(\'required\') && _signupFormOne.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.email.invalid  && _signupFormOne.controls.email.dirty && _signupFormOne.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n			<!--EMAIL END-->\n\n			<!--PASSWORD START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" [type]="_passwordInputType"></ion-input>\n\n	    </ion-item>\n\n	    <ion-icon name="{{_passwordIcon}}" (click)="_toggleViewPassword($event)" class="password-icon"></ion-icon>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.password.hasError(\'required\') && _signupFormOne.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n	    <!--PASSWORD END-->\n\n	    <!--ADDRESS 1 START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Address 1</ion-label>\n\n	      <ion-input formControlName="address1" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.address1.hasError(\'required\') && _signupFormOne.controls.address1.touched">\n\n				<p ion-text text-wrap>Please Enter Address 1</p>\n\n			</ion-item>\n\n	    <!--ADDRESS 1 END-->\n\n	    <!--ADDRESS 2 START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Address 2</ion-label>\n\n	      <ion-input formControlName="address2" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--ADDRESS 2 END-->\n\n	    <!--COUNTRY START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Country</ion-label>\n\n	      <ion-select formControlName="country">\n\n	      	<ion-option *ngFor="let c of country" [selected]="c.id==\'1\'" [value]="c.id">{{c.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.country.hasError(\'required\') && _signupFormOne.controls.country.touched">\n\n				<p ion-text text-wrap>Please Enter Country</p>\n\n			</ion-item>\n\n	    <!--COUNTRY END-->\n\n	    <!--STATE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">State</ion-label>\n\n	      <ion-select formControlName="state">\n\n	      	<ion-option *ngFor="let s of state" [selected]="s.id==\'1\'" [value]="s.id">{{s.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.state.hasError(\'required\') && _signupFormOne.controls.state.touched">\n\n				<p ion-text text-wrap>Please Enter State</p>\n\n			</ion-item>\n\n	    <!--STATE END-->\n\n	    <!--CITY START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">City</ion-label>\n\n	      <ion-input formControlName="city" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.city.hasError(\'required\') && _signupFormOne.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item>\n\n	    <!--CITY END-->\n\n	    <!--PHONE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Phone</ion-label>\n\n	      <ion-input formControlName="phone" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'required\') && _signupFormOne.controls.phone.touched">\n\n				<p ion-text text-wrap>Please Enter Phone</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'pattern\') && _signupFormOne.controls.phone.dirty && _signupFormOne.controls.phone.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'minlength\') && _signupFormOne.controls.phone.touched">\n\n				<p ion-text text-wrap>Minimum 9 Characters</p>\n\n			</ion-item>\n\n	    <!--PHONE END-->\n\n	    <!--ZIPCODE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Zipcode</ion-label>\n\n	      <ion-input (keyup)="_onKeyup()" formControlName="zipcode" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'required\') && _signupFormOne.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Please Enter Zipcode</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'pattern\') && _signupFormOne.controls.zipcode.dirty && _signupFormOne.controls.zipcode.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'minlength\') && _signupFormOne.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Minimum 5 Characters</p>\n\n			</ion-item>\n\n	    <!--ZIPCODE END-->\n\n			<div class="submit-btn">\n\n				<button ion-button (click)="_goBack()" type="button">\n\n					<ion-icon name="md-arrow-back"></ion-icon>&nbsp;&nbsp;Back\n\n				</button>\n\n				<button color="danger" float-right ion-button (click)="_nextStep()" [disabled]="!_signupFormOne.valid" type="button">Next &nbsp;&nbsp;<ion-icon name="md-arrow-forward"></ion-icon></button>\n\n			</div>\n\n	  </div>	  \n\n	</form>\n\n	<form method="post"  [formGroup]="_signupFormTwo" (submit)="_submitSignup()" novalidate [hidden]="!formOne">\n\n		<div class="login-spacing">\n\n			<!--BUSINESS NAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Business Name</ion-label>\n\n	      <ion-input formControlName="businessname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.businessname.hasError(\'required\') && _signupFormTwo.controls.businessname.touched">\n\n				<p ion-text text-wrap>Please Enter Business Name</p>\n\n			</ion-item>\n\n	    <!--BUSINESS NAME END-->\n\n	    <!--Website START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Website</ion-label>\n\n	      <ion-input formControlName="website" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.website.hasError(\'required\') && _signupFormTwo.controls.website.touched">\n\n				<p ion-text text-wrap>Please Enter Website</p>\n\n			</ion-item>\n\n	    <!--Website END-->\n\n	    <!--Work Experience START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Work Experience</ion-label>\n\n	      <ion-input formControlName="experience" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Work Experience END-->\n\n	    <!--Primary Services START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Primary Services</ion-label>\n\n	      <ion-input formControlName="primaryservice" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.primaryservice.hasError(\'required\') && _signupFormTwo.controls.primaryservice.touched">\n\n				<p ion-text text-wrap>Please Enter Primary Service</p>\n\n			</ion-item>\n\n	    <!--Primary Services END-->\n\n	    <!--Types of Experience START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Types of Experience</ion-label>\n\n	      <ion-input formControlName="typeexp" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.typeexp.hasError(\'required\') && _signupFormTwo.controls.typeexp.touched">\n\n				<p ion-text text-wrap>Please Enter Types of Experience</p>\n\n			</ion-item>\n\n	    <!--Types of Experience END-->\n\n	    <!--Qualification START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Qualification</ion-label>\n\n	      <ion-input formControlName="qualification" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Qualification END-->\n\n	    <!--Description START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Description</ion-label>\n\n	      <ion-input formControlName="description" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Description END-->\n\n	    <!--Services START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Other Related Services</ion-label>\n\n	      <ion-input formControlName="otherservice" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Services END-->\n\n	    <div class="submit-btn">\n\n				<button ion-button (click)="_prevStep()" type="button">\n\n					<ion-icon name="md-arrow-back"></ion-icon>&nbsp;&nbsp;Back</button>\n\n				<button color="danger" ion-button float-right type="submit">Create Account</button>\n\n			</div>\n\n	  </div>\n\n	</form>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\signup\signup.html"*/
+            selector: 'page-signup',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\signup\signup.html"*/'<ion-content>\n\n	<div class="logo">\n\n		<img src="assets/imgs/logo.png">\n\n	</div>\n\n	<h4>Welcome to myAgrow Registration!</h4>\n\n	<form [formGroup]="_signupFormOne" method="post" novalidate [hidden]="formOne">\n\n		<div class="login-spacing">\n\n			<!--FIRSTNAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Firstname</ion-label>\n\n	      <ion-input formControlName="firstname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.firstname.hasError(\'required\') && _signupFormOne.controls.firstname.touched">\n\n				<p ion-text text-wrap>Please Enter Firstname</p>\n\n			</ion-item>\n\n	    <!--FIRSTNAME END-->\n\n	    <!--LASTNAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Lastname</ion-label>\n\n	      <ion-input formControlName="lastname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.lastname.hasError(\'required\') && _signupFormOne.controls.lastname.touched">\n\n				<p ion-text text-wrap>Please Enter Lastname</p>\n\n			</ion-item>\n\n	    <!--LASTNAME END-->\n\n			<!--EMAIL START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.email.hasError(\'required\') && _signupFormOne.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.email.invalid  && _signupFormOne.controls.email.dirty && _signupFormOne.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n			<!--EMAIL END-->\n\n			<!--PASSWORD START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" [type]="_passwordInputType"></ion-input>\n\n	    </ion-item>\n\n	    <ion-icon name="{{_passwordIcon}}" (click)="_toggleViewPassword($event)" class="password-icon"></ion-icon>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.password.hasError(\'required\') && _signupFormOne.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n	    <!--PASSWORD END-->\n\n	    <!--ADDRESS 1 START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Address 1</ion-label>\n\n	      <ion-input formControlName="address1" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.address1.hasError(\'required\') && _signupFormOne.controls.address1.touched">\n\n				<p ion-text text-wrap>Please Enter Address 1</p>\n\n			</ion-item>\n\n	    <!--ADDRESS 1 END-->\n\n	    <!--ADDRESS 2 START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Address 2</ion-label>\n\n	      <ion-input formControlName="address2" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--ADDRESS 2 END-->\n\n	    <!--COUNTRY START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Country</ion-label>\n\n	      <ion-select formControlName="country">\n\n	      	<ion-option *ngFor="let c of country" [selected]="c.id==\'1\'" [value]="c.id">{{c.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.country.hasError(\'required\') && _signupFormOne.controls.country.touched">\n\n				<p ion-text text-wrap>Please Enter Country</p>\n\n			</ion-item>\n\n	    <!--COUNTRY END-->\n\n	    <!--STATE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">State</ion-label>\n\n	      <ion-select formControlName="state">\n\n	      	<ion-option *ngFor="let s of state" [selected]="s.id==\'1\'" [value]="s.id">{{s.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.state.hasError(\'required\') && _signupFormOne.controls.state.touched">\n\n				<p ion-text text-wrap>Please Enter State</p>\n\n			</ion-item>\n\n	    <!--STATE END-->\n\n	    <!--CITY START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">City</ion-label>\n\n	      <ion-input formControlName="city" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.city.hasError(\'required\') && _signupFormOne.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item>\n\n	    <!--CITY END-->\n\n	    <!--PHONE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Phone</ion-label>\n\n	      <ion-input formControlName="phone" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'required\') && _signupFormOne.controls.phone.touched">\n\n				<p ion-text text-wrap>Please Enter Phone</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'pattern\') && _signupFormOne.controls.phone.dirty && _signupFormOne.controls.phone.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.phone.hasError(\'minlength\') && _signupFormOne.controls.phone.touched">\n\n				<p ion-text text-wrap>Minimum 9 Characters</p>\n\n			</ion-item>\n\n	    <!--PHONE END-->\n\n	    <!--ZIPCODE START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Zipcode</ion-label>\n\n	      <ion-input (keyup)="_onKeyup()" formControlName="zipcode" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'required\') && _signupFormOne.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Please Enter Zipcode</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'pattern\') && _signupFormOne.controls.zipcode.dirty && _signupFormOne.controls.zipcode.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.zipcode.hasError(\'minlength\') && _signupFormOne.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Minimum 5 Characters</p>\n\n			</ion-item>\n\n	    <!--ZIPCODE END-->\n\n			<div class="submit-btn">\n\n				<button ion-button (click)="_goBack()" type="button">\n\n					<ion-icon name="md-arrow-back"></ion-icon>&nbsp;&nbsp;Back\n\n				</button>\n\n				<button color="danger" float-right ion-button (click)="_nextStep()" [disabled]="!_signupFormOne.valid" type="button">Next &nbsp;&nbsp;<ion-icon name="md-arrow-forward"></ion-icon></button>\n\n			</div>\n\n	  </div>	  \n\n	</form>\n\n	<form method="post"  [formGroup]="_signupFormTwo" (submit)="_submitSignup()" novalidate [hidden]="!formOne">\n\n		<div class="login-spacing">\n\n			<!--BUSINESS NAME START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Business Name</ion-label>\n\n	      <ion-input formControlName="businessname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.businessname.hasError(\'required\') && _signupFormTwo.controls.businessname.touched">\n\n				<p ion-text text-wrap>Please Enter Business Name</p>\n\n			</ion-item>\n\n	    <!--BUSINESS NAME END-->\n\n	    <!--Website START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Website</ion-label>\n\n	      <ion-input formControlName="website" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.website.hasError(\'required\') && _signupFormTwo.controls.website.touched">\n\n				<p ion-text text-wrap>Please Enter Website</p>\n\n			</ion-item>\n\n	    <!--Website END-->\n\n	    <!--Work Experience START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Work Experience</ion-label>\n\n	      <ion-input formControlName="experience" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Work Experience END-->\n\n	    <!--Primary Services START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Primary Services</ion-label>\n\n	      <ion-input formControlName="primaryservice" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.primaryservice.hasError(\'required\') && _signupFormTwo.controls.primaryservice.touched">\n\n				<p ion-text text-wrap>Please Enter Primary Service</p>\n\n			</ion-item>\n\n	    <!--Primary Services END-->\n\n	    <!--Types of Experience START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Types of Experience</ion-label>\n\n	      <ion-input formControlName="typeexp" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormTwo.controls.typeexp.hasError(\'required\') && _signupFormTwo.controls.typeexp.touched">\n\n				<p ion-text text-wrap>Please Enter Types of Experience</p>\n\n			</ion-item>\n\n	    <!--Types of Experience END-->\n\n	    <!--Qualification START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Qualification</ion-label>\n\n	      <ion-input formControlName="qualification" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Qualification END-->\n\n	    <!--Description START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Description</ion-label>\n\n	      <ion-input formControlName="description" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Description END-->\n\n	    <!--Services START-->\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Other Related Services</ion-label>\n\n	      <ion-input formControlName="otherservice" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <!--Services END-->\n\n	    <div class="submit-btn">\n\n				<button ion-button (click)="_prevStep()" type="button">\n\n					<ion-icon name="md-arrow-back"></ion-icon>&nbsp;&nbsp;Back</button>\n\n				<button color="danger" ion-button float-right type="submit">Create Account</button>\n\n			</div>\n\n	  </div>\n\n	</form>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\signup\signup.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
     ], SignupPage);
     return SignupPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=signup.js.map
 
 /***/ }),
 
-/***/ 206:
+/***/ 207:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_commonService__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__ = __webpack_require__(104);
@@ -776,17 +853,17 @@ var ProfilePage = (function () {
     ProfilePage.prototype.profileLoadForm = function () {
         this._profileForm = this._formBuilder.group({
             id: [this.profile.id],
-            firstname: [this.profile.first_name, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            lastname: [this.profile.last_name, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            phone: [this.profile.phone, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern('[0-9]*'), __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(9),])],
-            email: [this.profile.email, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)])],
+            firstname: [this.profile.first_name, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            lastname: [this.profile.last_name, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            phone: [this.profile.phone, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern('[0-9]*'), __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].minLength(9),])],
+            email: [this.profile.email, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern(__WEBPACK_IMPORTED_MODULE_4__validators_regexPatterns__["a" /* regexPatterns */].email)])],
             password: [""],
-            city: [this.profile.city, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            state: [this.profile.state_id, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            country: [this.profile.country_id, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            address1: [this.profile.address, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            address2: [this.profile.address2, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required])],
-            zipcode: [this.profile.zip, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].pattern('[0-9]*'), __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(5),])],
+            city: [this.profile.city, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            state: [this.profile.state_id, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            country: [this.profile.country_id, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            address1: [this.profile.address, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            address2: [this.profile.address2, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required])],
+            zipcode: [this.profile.zip, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].pattern('[0-9]*'), __WEBPACK_IMPORTED_MODULE_3__angular_forms__["h" /* Validators */].minLength(5),])],
         });
     };
     ProfilePage.prototype._saveProfile = function () {
@@ -827,7 +904,7 @@ var ProfilePage = (function () {
     };
     ProfilePage = ProfilePage_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-profile',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\profile\profile.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Profile</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<form  [formGroup]="_profileForm" method="post" novalidate (submit)="_saveProfile()">\n\n		<ion-input formControlName="id" type="hidden"></ion-input>\n\n		<div class="login-spacing">\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Firstname</ion-label>\n\n	      <ion-input formControlName="firstname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.firstname.hasError(\'required\') && _profileForm.controls.firstname.touched">\n\n				<p ion-text text-wrap>Please Enter Firstname</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Lastname</ion-label>\n\n	      <ion-input formControlName="lastname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.lastname.hasError(\'required\') && _profileForm.controls.lastname.touched">\n\n				<p ion-text text-wrap>Please Enter Lastname</p>\n\n			</ion-item>\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Phone</ion-label>\n\n	      <ion-input formControlName="phone" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'required\') && _profileForm.controls.phone.touched">\n\n				<p ion-text text-wrap>Please Enter Phone</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'pattern\') && _profileForm.controls.phone.dirty && _profileForm.controls.phone.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'minlength\') && _profileForm.controls.phone.touched">\n\n				<p ion-text text-wrap>Minimum 9 Characters</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email"></ion-input>\n\n	    </ion-item>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.hasError(\'required\') && _profileForm.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.invalid  && _profileForm.controls.email.dirty && _profileForm.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" type="password"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.password.hasError(\'required\') && _profileForm.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Address 1</ion-label>\n\n	      <ion-input formControlName="address1" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.address1.hasError(\'required\') && _profileForm.controls.address1.touched">\n\n				<p ion-text text-wrap>Please Enter Address 1</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Address 2</ion-label>\n\n	      <ion-input formControlName="address2" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">City</ion-label>\n\n	      <ion-input formControlName="city" type="text"></ion-input>\n\n	    </ion-item>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError(\'required\') && _profileForm.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">State</ion-label>\n\n	      <ion-select formControlName="state">\n\n	      	<ion-option *ngFor="let s of state" [value]="s.id">{{s.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.state.hasError(\'required\') && _profileForm.controls.state.touched">\n\n				<p ion-text text-wrap>Please Enter State</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Country</ion-label>\n\n	      <ion-select formControlName="country">\n\n	      	<ion-option *ngFor="let c of country" [value]="c.id">{{c.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.country.hasError(\'required\') && _profileForm.controls.country.touched">\n\n				<p ion-text text-wrap>Please Enter Country</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Zipcode</ion-label>\n\n	      <ion-input type="number" formControlName="zipcode"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'required\') && _profileForm.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Please Enter Zipcode</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'pattern\') && _profileForm.controls.zipcode.dirty && _profileForm.controls.zipcode.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'minlength\') && _profileForm.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Minimum 5 Characters</p>\n\n			</ion-item>\n\n	  </div>\n\n	  <div class="submit-btn">\n\n			<button color="dark" ion-button block [disabled]="!_profileForm.valid"  type="submit">Save</button>\n\n		</div>\n\n	</form>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\profile\profile.html"*/
+            selector: 'page-profile',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\profile\profile.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Profile</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<form  [formGroup]="_profileForm" method="post" novalidate (submit)="_saveProfile()">\n\n		<ion-input formControlName="id" type="hidden"></ion-input>\n\n		<div class="login-spacing">\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Firstname</ion-label>\n\n	      <ion-input formControlName="firstname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.firstname.hasError(\'required\') && _profileForm.controls.firstname.touched">\n\n				<p ion-text text-wrap>Please Enter Firstname</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Lastname</ion-label>\n\n	      <ion-input formControlName="lastname" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.lastname.hasError(\'required\') && _profileForm.controls.lastname.touched">\n\n				<p ion-text text-wrap>Please Enter Lastname</p>\n\n			</ion-item>\n\n			<ion-item>\n\n	      <ion-label stacked color="transparent">Phone</ion-label>\n\n	      <ion-input formControlName="phone" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'required\') && _profileForm.controls.phone.touched">\n\n				<p ion-text text-wrap>Please Enter Phone</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'pattern\') && _profileForm.controls.phone.dirty && _profileForm.controls.phone.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.phone.hasError(\'minlength\') && _profileForm.controls.phone.touched">\n\n				<p ion-text text-wrap>Minimum 9 Characters</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Email</ion-label>\n\n	      <ion-input formControlName="email" type="email"></ion-input>\n\n	    </ion-item>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.hasError(\'required\') && _profileForm.controls.email.touched">\n\n				<p ion-text text-wrap>Please Enter Email-ID</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.email.invalid  && _profileForm.controls.email.dirty && _profileForm.controls.email.value!=\'\'">\n\n				<p ion-text text-wrap>Please use correct email format, e.g.:someone@domain.com.</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Password</ion-label>\n\n	      <ion-input formControlName="password" type="password"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.password.hasError(\'required\') && _profileForm.controls.password.touched">\n\n				<p ion-text text-wrap>Please Enter Password</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Address 1</ion-label>\n\n	      <ion-input formControlName="address1" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.address1.hasError(\'required\') && _profileForm.controls.address1.touched">\n\n				<p ion-text text-wrap>Please Enter Address 1</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Address 2</ion-label>\n\n	      <ion-input formControlName="address2" type="text"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">City</ion-label>\n\n	      <ion-input formControlName="city" type="text"></ion-input>\n\n	    </ion-item>\n\n	     <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.city.hasError(\'required\') && _profileForm.controls.city.touched">\n\n				<p ion-text text-wrap>Please Enter City</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">State</ion-label>\n\n	      <ion-select formControlName="state">\n\n	      	<ion-option *ngFor="let s of state" [value]="s.id">{{s.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.state.hasError(\'required\') && _profileForm.controls.state.touched">\n\n				<p ion-text text-wrap>Please Enter State</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Country</ion-label>\n\n	      <ion-select formControlName="country">\n\n	      	<ion-option *ngFor="let c of country" [value]="c.id">{{c.name}}</ion-option>\n\n	      </ion-select>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.country.hasError(\'required\') && _profileForm.controls.country.touched">\n\n				<p ion-text text-wrap>Please Enter Country</p>\n\n			</ion-item>\n\n	    <ion-item>\n\n	      <ion-label stacked color="transparent">Zipcode</ion-label>\n\n	      <ion-input type="number" formControlName="zipcode"></ion-input>\n\n	    </ion-item>\n\n	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'required\') && _profileForm.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Please Enter Zipcode</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'pattern\') && _profileForm.controls.zipcode.dirty && _profileForm.controls.zipcode.value!=\'\'">\n\n				<p ion-text text-wrap>Please Enter Numbers Only</p>\n\n			</ion-item>\n\n			<ion-item class="login-error" no-lines no-padding *ngIf="_profileForm.controls.zipcode.hasError(\'minlength\') && _profileForm.controls.zipcode.touched">\n\n				<p ion-text text-wrap>Minimum 5 Characters</p>\n\n			</ion-item>\n\n	  </div>\n\n	  <div class="submit-btn">\n\n			<button color="dark" ion-button block [disabled]="!_profileForm.valid"  type="submit">Save</button>\n\n		</div>\n\n	</form>\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\profile\profile.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */], __WEBPACK_IMPORTED_MODULE_5__providers_globalVars__["a" /* GlobalVars */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]])
@@ -840,13 +917,13 @@ var ProfilePage = (function () {
 
 /***/ }),
 
-/***/ 207:
+/***/ 208:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(232);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -854,7 +931,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 231:
+/***/ 232:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -862,20 +939,21 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_home_home__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_list_list__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_events_events__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_list_list__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_events_events__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_login_login__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_signup_signup__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_google_maps__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_signup_signup__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_google_maps__ = __webpack_require__(205);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ionic_native_splash_screen__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_in_app_browser__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_in_app_browser__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__providers_commonService__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_globalVars__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ionic_native_geolocation__ = __webpack_require__(202);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -899,6 +977,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+//import { Platform } from 'ionic-angular';
 var AppModule = (function () {
     function AppModule() {
     }
@@ -913,7 +993,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["b" /* ModalContentPage */],
                 __WEBPACK_IMPORTED_MODULE_10__pages_signup_signup__["a" /* SignupPage */],
                 __WEBPACK_IMPORTED_MODULE_8__pages_events_events__["a" /* EventModalContentPage */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__["a" /* ProfilePage */]
+                __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__["a" /* ProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["c" /* SearchPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -932,7 +1013,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["b" /* ModalContentPage */],
                 __WEBPACK_IMPORTED_MODULE_10__pages_signup_signup__["a" /* SignupPage */],
                 __WEBPACK_IMPORTED_MODULE_8__pages_events_events__["a" /* EventModalContentPage */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__["a" /* ProfilePage */]
+                __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__["a" /* ProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["c" /* SearchPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_16__providers_globalVars__["a" /* GlobalVars */],
@@ -941,6 +1023,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_13__ionic_native_splash_screen__["a" /* SplashScreen */],
                 __WEBPACK_IMPORTED_MODULE_15__providers_commonService__["a" /* CommonService */],
                 __WEBPACK_IMPORTED_MODULE_11__ionic_native_google_maps__["a" /* GoogleMaps */],
+                __WEBPACK_IMPORTED_MODULE_17__ionic_native_geolocation__["a" /* Geolocation */],
+                //Platform,
                 { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* IonicErrorHandler */] }
             ]
         })
@@ -952,19 +1036,19 @@ var AppModule = (function () {
 
 /***/ }),
 
-/***/ 273:
+/***/ 274:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_events_events__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_events_events__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_login_login__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_profile_profile__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_globalVars__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1037,7 +1121,7 @@ var MyApp = (function () {
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Nav */])
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\app\app.html"*/'<ion-menu id="myMenu" [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>\n        <img src="assets/imgs/logo.png">\n      </ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <div *ngFor="let p of pages" >\n        <button menuClose ion-item *ngIf="p.title!=\'Logout\'" (click)="openPage(p)">\n          <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}\n        </button>\n        <button menuClose ion-item *ngIf="p.title==\'Logout\'" (click)="_logout()">\n          <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}\n        </button>\n      </div>\n    </ion-list>\n  </ion-content>\n\n</ion-menu>\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\app\app.html"*/'<ion-menu id="myMenu" [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>\n        <img src="assets/imgs/logo.png">\n      </ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <div *ngFor="let p of pages" >\n        <button menuClose ion-item *ngIf="p.title!=\'Logout\'" (click)="openPage(p)">\n          <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}\n        </button>\n        <button menuClose ion-item *ngIf="p.title==\'Logout\'" (click)="_logout()">\n          <ion-icon name="{{p.icon}}"></ion-icon> {{p.title}}\n        </button>\n      </div>\n    </ion-list>\n  </ion-content>\n\n</ion-menu>\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* App */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_8__providers_globalVars__["a" /* GlobalVars */]])
     ], MyApp);
@@ -1048,7 +1132,7 @@ var MyApp = (function () {
 
 /***/ }),
 
-/***/ 281:
+/***/ 282:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1058,13 +1142,13 @@ var SERVER_URL = "http://162.144.41.156/~izaapinn/agdemo/Webservice/";
 
 /***/ }),
 
-/***/ 284:
+/***/ 285:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1103,7 +1187,7 @@ var ListPage = (function () {
     };
     ListPage = ListPage_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-list',template:/*ion-inline-start:"C:\Users\IZ-Sathish\myagrow\src\pages\list\list.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>List</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">\n      <ion-icon [name]="item.icon" item-start></ion-icon>\n      {{item.title}}\n      <div class="item-note" item-end>\n        {{item.note}}\n      </div>\n    </button>\n  </ion-list>\n  <div *ngIf="selectedItem" padding>\n    You navigated here from <b>{{selectedItem.title}}</b>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\IZ-Sathish\myagrow\src\pages\list\list.html"*/
+            selector: 'page-list',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\list\list.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>List</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">\n      <ion-icon [name]="item.icon" item-start></ion-icon>\n      {{item.title}}\n      <div class="item-note" item-end>\n        {{item.note}}\n      </div>\n    </button>\n  </ion-list>\n  <div *ngIf="selectedItem" padding>\n    You navigated here from <b>{{selectedItem.title}}</b>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\list\list.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]])
     ], ListPage);
@@ -1122,10 +1206,10 @@ var ListPage = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommonService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_toPromise__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_toPromise__ = __webpack_require__(284);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_toPromise__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1190,12 +1274,36 @@ var CommonService = (function () {
         return this.http.put(apiUrl + 'users/profile', data, options).map(function (res) { return res.json(); })
             .toPromise();
     };
+    CommonService.prototype.getCurrentCity = function () {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.get('https://api.ipdata.co', options).map(function (res) { return res.json(); }).toPromise();
+    };
+    CommonService.prototype.getWeather = function (data) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        //http:api.openweathermap.org/data/2.5/weather?q=".$city.",".$country."&APPID=da7f37c0af468057b3501d021fbd6c0f
+        return this.http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + data.latitude + '&lon=' + data.longitude + '&appid=' + "da7f37c0af468057b3501d021fbd6c0f" + '&units=imperial', options).map(function (res) { return res.json(); }).toPromise();
+        // return this.http.get('http://api.wunderground.com/api/c6dc8e785d943109/conditions/q/AZ/'+city+'.json',options).map(res => res.json()).toPromise();
+    };
+    CommonService.prototype.getCategory = function () {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.get(apiUrl + 'users/category', options).map(function (res) { return res.json(); })
+            .toPromise();
+    };
+    CommonService.prototype.getSearchRecords = function (data) {
+        console.log(data.keywords);
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.get(apiUrl + 'users/search_records?cat=' + data.category + '&loc=' + data.location + '&key=' + data.keywords, options).map(function (res) { return res.json(); })
+            .toPromise();
+    };
     CommonService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]])
     ], CommonService);
     return CommonService;
-    var _a;
 }());
 
 //# sourceMappingURL=commonService.js.map
@@ -1246,5 +1354,5 @@ var GlobalVars = (function () {
 
 /***/ })
 
-},[207]);
+},[208]);
 //# sourceMappingURL=main.js.map
