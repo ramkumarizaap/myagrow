@@ -77,7 +77,10 @@
     </ion-row>
     </ion-card>
   </div>
-  <ion-item *ngIf="services==null || services.length <=0 ">No Records Found.</ion-item>
+  <ion-row *ngIf="count <= 0" style="margin-top:140px;">
+    <ion-item >No Records Found.</ion-item>
+    </ion-row>
+  <!-- <ion-item *ngIf="services==null || count <= 0 ">No Records Found.</ion-item> -->
   <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll> -->

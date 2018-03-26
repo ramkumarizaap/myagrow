@@ -129,8 +129,8 @@ export class HomePage implements OnInit{
         setTimeout(()=>{
           load.dismiss();
           console.log(result);    
-        this.services = result.retdata;
-        this.count = result.retdata.length;
+        this.services = result.retdata.data;
+        this.count = result.retdata.count;
 
         },3000);
        // this.viewCtrl.dismiss();
