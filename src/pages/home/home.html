@@ -4,9 +4,8 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title float-left>Services</ion-title>
-    <!--  <ion-icon name="search" (click)="search()"></ion-icon> -->
      <ion-item class="bg-weather" float-right>
-      {{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C
+      {{this.city}}&nbsp;&nbsp;<span style="font-size: 18px;">{{this.weather}}&deg;C</span>
     </ion-item>
    <!-- <img src="assets/imgs/weather.jpg"><div>{{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C</div> -->
   </ion-navbar>
@@ -28,30 +27,28 @@
             </ion-col>
             <ion-col col-6>
               <ion-item>
-               <ion-label stacked color="transparent">Enter Location</ion-label>
-                <ion-input type="text" formControlName="location"></ion-input>
+              <!--  <ion-label stacked color="transparent">Enter Location</ion-label> -->
+                <ion-input type="text" formControlName="location" placeholder="Enter Location"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
           <ion-row  class="search-box">
             <ion-col col-6>
-              <ion-item>
-                <ion-label stacked color="transparent">Enter Keyword</ion-label>
-                <ion-input  type="text" formControlName="keywords"></ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col col-3>
-              <div class="submit-btn">
-                <button color="dark" ion-button block type="submit">Search</button>
-              </div>
-            </ion-col>
-            <ion-col col-3>
-              <div class="submit-btn">
-                <button color="danger" (click)="_clearSearch()" ion-button block type="button">Clear</button>
-              </div>
-            </ion-col> 
-          </ion-row>
-        </ion-grid>
+             <ion-item>
+             <!-- <ion-label stacked color="transparent">Enter Keyword</ion-label> -->
+            <ion-input  type="text" formControlName="keywords" placeholder="Enter Keyword"></ion-input>
+             </ion-item>
+              </ion-col>
+              
+              <ion-col col-6>
+                  <div class="submit-btn">
+                    <button ion-button icon-only color="primary" (click)="search_category()"> <ion-icon name="search"></ion-icon></button>
+                    <button ion-button icon-only color="danger" (click)="_clearSearch()"> <ion-icon name="md-close"></ion-icon></button>
+                    
+                 </div>
+              </ion-col> 
+            </ion-row>
+      </ion-grid>
       </div>
     </form>
   </div>

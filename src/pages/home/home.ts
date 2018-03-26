@@ -11,9 +11,10 @@ import { Platform } from 'ionic-angular';
 })
 export class HomePage implements OnInit{
 	private services:any;
-	private count:any = 1;
+	//private count:any = 1;
   public city;
   public weather;
+  public count;
   public _searchForm:FormGroup;
   public category: any;
   constructor(public navCtrl: NavController,
@@ -30,8 +31,8 @@ export class HomePage implements OnInit{
      //console.log(result);
       this.city = result.city;
       this.commonService.getWeather(result).then((weather)=> {
-      // console.log(weather);
-        this.weather = (weather.main.temp-32)*5/9;
+      //console.log(weather);
+        this.weather = Math.round((weather.main.temp-32)*5/9);
       });
     });
     this.menu.enable(true);
@@ -49,7 +50,7 @@ export class HomePage implements OnInit{
   		loading.dismiss();
   		console.log(result);
   		this.services = result.data;
-  		this.count = 1;
+  		this.count = result.count;
   		let alert = this.alertCtrl.create({
           title: result.status.toUpperCase(),
           message: result.message,
@@ -60,7 +61,7 @@ export class HomePage implements OnInit{
 
   	},(err) => {
         loading.dismiss();
-        console.log(err);
+        console.log(JSON.stringify(err));
         let alert = this.alertCtrl.create({
           title: 'Error',
           message: 'Something Wrong',
@@ -89,7 +90,7 @@ export class HomePage implements OnInit{
   {
      this.commonService.getCategory().then((result)=>{
          
-        console.log(result.category);
+       // console.log(result.category);
       this.category = result.category;    
  
      }).catch((err)=>{
@@ -108,19 +109,28 @@ export class HomePage implements OnInit{
     });
   }
 
-    search_category()
+   search_category(type:string)
    {
+     //alert(type);
+     let param:any = this._searchForm.value;
+
+     console.log(param);
+     if(param.category=='' && param.location=='' && param.keywords=='')
+       return false;
+
      let load=this.loader.create({
        content:"Please Wait"
      });
+
      load.present();
-    //console.log(this._searchForm.value);
-    this.commonService.getSearchRecords(this._searchForm.value).then((result)=>{
+    this.commonService.getSearchRecords(param).then((result)=>{
          
         console.log(result);
         setTimeout(()=>{
           load.dismiss();
+          console.log(result);    
         this.services = result.retdata;
+        this.count = result.retdata.length;
 
         },3000);
        // this.viewCtrl.dismiss();
@@ -144,7 +154,6 @@ export class HomePage implements OnInit{
   }
 
 }
-
 @Component({
 	templateUrl: 'modal.html'
 })
