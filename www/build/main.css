@@ -25723,6 +25723,10 @@ ion-navbar.toolbar {
   padding-bottom: 0 !important;
 }
 
+page-home .service-search {
+  width: 100%;
+}
+
 .button-md-dark {
   background-color: #72a944 !important;
 }
