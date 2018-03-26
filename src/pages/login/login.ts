@@ -59,6 +59,9 @@ export class LoginPage {
   private _gotoSignup():void{
     this.navCtrl.push(SignupPage);
   };
+  private _gotoHome():void{
+    this.navCtrl.setRoot(HomePage);
+  };
 
   private _login():void
   {

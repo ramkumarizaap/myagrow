@@ -67,13 +67,13 @@ export class SignupPage {
       //ADDRESS 2
       address2: [""],
       //COUNTRY
-      country: ["",
+      country: ["231",
         Validators.compose([
           Validators.required
         ])
       ],
       //STATE
-      state: ["",
+      state: ["3924",
         Validators.compose([
           Validators.required
         ])

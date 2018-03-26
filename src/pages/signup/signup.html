@@ -64,7 +64,7 @@
 			<ion-item>
 	      <ion-label stacked color="transparent">Country</ion-label>
 	      <ion-select formControlName="country">
-	      	<ion-option *ngFor="let c of country" [selected]="c.id=='1'" [value]="c.id">{{c.name}}</ion-option>
+	      	<ion-option *ngFor="let c of country" [value]="c.id">{{c.name}}</ion-option>
 	      </ion-select>
 	    </ion-item>
 	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.country.hasError('required') && _signupFormOne.controls.country.touched">
@@ -75,7 +75,7 @@
 			<ion-item>
 	      <ion-label stacked color="transparent">State</ion-label>
 	      <ion-select formControlName="state">
-	      	<ion-option *ngFor="let s of state" [selected]="s.id=='1'" [value]="s.id">{{s.name}}</ion-option>
+	      	<ion-option *ngFor="let s of state" [value]="s.id">{{s.name}}</ion-option>
 	      </ion-select>
 	    </ion-item>
 	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.state.hasError('required') && _signupFormOne.controls.state.touched">

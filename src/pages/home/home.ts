@@ -137,6 +137,12 @@ export class HomePage implements OnInit{
 
   }
 
+  _clearSearch()
+  {
+    this.ngOnInit();
+    this.getServices();
+  }
+
 }
 
 @Component({

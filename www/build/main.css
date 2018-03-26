@@ -25701,6 +25701,54 @@ page-home p.description {
   overflow: hidden;
 }
 
+page-home ion-item.bg-weather {
+  background-image: url("../assets/imgs/weather.jpg");
+  background-size: 100% 100%;
+  border: 0px solid red;
+  width: 150px;
+  padding: 0px;
+  margin: 0px;
+}
+
+page-home ion-item.bg-weather .item-inner {
+  padding: 0 !important;
+}
+
+page-home ion-item.bg-weather ion-label {
+  padding-left: 6px;
+  font-weight: bold;
+}
+
+page-home ion-navbar ion-title {
+  padding-top: 10px;
+}
+
+page-home .search-box ion-item, page-home .search-box ion-item .item-inner {
+  padding: 0 !important;
+}
+
+page-home .search-box ion-item ion-label, page-home .search-box ion-item ion-input input {
+  margin: 0 !important;
+}
+
+page-home .search-box ion-item ion-select {
+  padding: 0 2px 0 0 !important;
+}
+
+page-home .search-box ion-item button.item-cover {
+  padding: 0;
+}
+
+page-home .service-search {
+  position: fixed;
+  background: #fff;
+  z-index: 99999;
+}
+
+page-home .service-result {
+  margin-top: 140px;
+}
+
 page-login ion-content {
   color: #fff !important;
   background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url("../assets/imgs/background.jpg");

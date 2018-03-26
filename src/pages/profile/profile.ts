@@ -35,6 +35,7 @@ export class ProfilePage {
 			let load = this.loader.create({
 				content:'Please Wait...'
 			});
+			console.log(res);
 			this.profile = res.data;
 			load.present();
 			setTimeout(()=>{
@@ -60,7 +61,7 @@ export class ProfilePage {
 			id:[this.profile.id],
 			firstname:[this.profile.first_name, Validators.compose([Validators.required])],
 			lastname:[this.profile.last_name, Validators.compose([Validators.required])],
-			phone:[this.profile.phone, Validators.compose([Validators.required,Validators.pattern('[0-9]*'),Validators.minLength(9),])],
+			phone:[this.profile.phone, Validators.compose([Validators.required,Validators.pattern('[0-9]*'),Validators.minLength(9)])],
 			email:[this.profile.email, Validators.compose([Validators.required,Validators.pattern(regexPatterns.email)])],
 			password:[""],
 			city:[this.profile.city,Validators.compose([Validators.required])],
@@ -68,19 +69,20 @@ export class ProfilePage {
 			country:[this.profile.country_id, Validators.compose([Validators.required])],
 			address1:[this.profile.address, Validators.compose([Validators.required])],
 			address2:[this.profile.address2, Validators.compose([Validators.required])],
-			zipcode:[this.profile.zip, Validators.compose([Validators.required,Validators.pattern('[0-9]*'),Validators.minLength(5),])],
+			zipcode:[this.profile.zip, Validators.compose([Validators.required,Validators.pattern('[0-9]*'),Validators.minLength(5)])],
 		});
 	}
 
 	_saveProfile()
 	{
-		console.log(this._profileForm.value);
-		let load = this.loader.create({
-			content:'Please Wait...'
-		});
-		load.present();
+		
 		if(this._profileForm.valid)
 		{
+			console.log(this._profileForm.value);
+				let load = this.loader.create({
+					content:'Please Wait...'
+				});
+				load.present();
 			this.commonService.saveProfile(this._profileForm.value).then((res)=>{
 				load.dismiss();
 				if(res.status=="success")
