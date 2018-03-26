@@ -25678,6 +25678,55 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+.head-weather {
+  background-image: url(../assets/imgs/weather.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  float: right;
+}
+
+.head-weather p {
+  color: #fff;
+  padding: 0 6px;
+  text-shadow: 1px 1px #000;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.head-weather p b {
+  font-size: 21px;
+}
+
+.header .title-services {
+  display: inline-block;
+  margin-top: 9px;
+}
+
+.location-search {
+  position: fixed;
+  background: whitesmoke;
+  z-index: 100000;
+  border-bottom: 1px solid #ddd;
+}
+
+.services-content {
+  margin-top: 140px;
+}
+
+.location-search .text-input {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.location-search ion-select {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.button-md-dark {
+  background-color: #72a944 !important;
+}
+
 page-events .float-right {
   float: right;
 }
