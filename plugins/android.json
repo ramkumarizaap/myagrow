@@ -10,6 +10,9 @@
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.myagrow.agriculture"
     },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.myagrow.agriculture"
+    },
     "cordova-plugin-googlemaps": {
       "API_KEY_FOR_ANDROID": "AIzaSyBzO5rK44qM9KgsAmI20BlLdfPLOQVPB_s",
       "PLAY_SERVICES_VERSION": "11.8.0",
