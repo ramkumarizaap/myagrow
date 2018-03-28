@@ -8,7 +8,23 @@
 </ion-header>
 
 <ion-content>
-	<form  [formGroup]="_profileForm" method="post" novalidate (submit)="_saveProfile()">
+  
+    <div padding>
+  <ion-segment [(ngModel)]="type">
+    <ion-segment-button value="con_info">
+      Contact
+    </ion-segment-button>
+    <ion-segment-button value="sel_ser">
+     Services
+    </ion-segment-button>
+     <ion-segment-button value="photos">
+      Photos
+    </ion-segment-button>
+  </ion-segment>
+</div>
+   <div [ngSwitch]="type">
+   	<ion-list *ngSwitchCase="'con_info'">
+	<form  [formGroup]="_profileForm" method="post" novalidate (submit)="_saveProfile('profile')">
 		<ion-input formControlName="id" type="hidden"></ion-input>
 		<div class="login-spacing">
 			<ion-item>
@@ -109,4 +125,102 @@
 			<button color="dark" ion-button block [disabled]="!_profileForm.valid"  type="submit">Save</button>
 		</div>
 	</form>
+</ion-list>
+
+ <ion-list *ngSwitchCase="'sel_ser'">
+   <form method="post" [formGroup]="_profileForm2" (submit)="_saveProfile('service')">
+   	<ion-input formControlName="seller_id" type="hidden"></ion-input>
+		<div class="login-spacing">
+			<!--BUSINESS NAME START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Business Name</ion-label>
+	      <ion-input formControlName="businessname" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm2.controls.businessname.hasError('required') && _profileForm2.controls.businessname.touched">
+				<p ion-text text-wrap>Please Enter Business Name</p>
+			</ion-item>
+	    <!--BUSINESS NAME END-->
+	    <!--Website START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Website</ion-label>
+	      <ion-input formControlName="website" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm2.controls.website.hasError('required') && _profileForm2.controls.website.touched">
+				<p ion-text text-wrap>Please Enter Website</p>
+			</ion-item>
+	    <!--Website END-->
+	    <!--Work Experience START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Work Experience</ion-label>
+	      <ion-input formControlName="experience" type="text"></ion-input>
+	    </ion-item>
+	    <!--Work Experience END-->
+	    <!--Primary Services START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Primary Services</ion-label>
+	      <ion-input formControlName="primaryservice" type="text"></ion-input>
+	    </ion-item>
+	  <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm2.controls.primaryservice.hasError('required') && _profileForm2.controls.primaryservice.touched">
+				<p ion-text text-wrap>Please Enter Primary Service</p>
+			</ion-item>
+	    <!--Primary Services END-->
+	    <!--Types of Experience START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Types of Experience</ion-label>
+	      <ion-input formControlName="typeexp" type="text"></ion-input>
+	    </ion-item>
+	    <ion-item class="login-error" no-lines no-padding *ngIf="_profileForm2.controls.typeexp.hasError('required') && _profileForm2.controls.typeexp.touched">
+				<p ion-text text-wrap>Please Enter Types of Experience</p>
+			</ion-item>
+	    <!--Types of Experience END-->
+	    <!--Qualification START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Qualification</ion-label>
+	      <ion-input formControlName="qualification" type="text"></ion-input>
+	    </ion-item>
+	    <!--Qualification END-->
+	    <!--Description START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Description</ion-label>
+	      <ion-input formControlName="description" type="text"></ion-input>
+	    </ion-item>
+	    <!--Description END-->
+	    <!--Services START-->
+			<ion-item>
+	      <ion-label stacked color="transparent">Other Related Services</ion-label>
+	      <ion-input formControlName="otherservice" type="text"></ion-input>
+	    </ion-item>
+	    <!--Services END-->
+	    <div class="submit-btn">
+				<button color="dark" ion-button block  type="submit" [disabled]="_profileForm2.invalid">Save</button>
+			</div>
+	  </div>
+	   </form>
+  </ion-list>
+  <ion-grid *ngSwitchCase="'photos'">
+  	<ion-row>
+  		<button ion-button block (click)="CaptureImage()" color="secondary">
+  			<ion-icon name="ios-cloud-upload"></ion-icon>&nbsp;&nbsp;
+  			Upload Photos
+  		</button>
+  	</ion-row>
+	  <form method="post" [formGroup]="_profileForm3" (submit)="uploadImage()">
+		 	<ion-row>
+		    <ion-col col-6 *ngFor="let profile_images of profile3">
+		    	<ion-input type="hidden" formControlName="seller_id" value={{profile_images.seller_id}}></ion-input>
+	          <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/seller/{{profile_images.image_name}}" onError="this.src='../assets/imgs/dummy_img.jpg';" />
+	      </ion-col>
+	    </ion-row>
+	    <ion-row class="upload-images">
+		  	<ion-col class="images" col-6 *ngFor="let img of user_photo;let i = index;">
+		  		<button (click)="_removePhoto(i)" ion-button color="danger"><ion-icon name="trash"></ion-icon></button>
+		  		<img src="{{img}}" style="height:100px;width:100%">	  		
+		  	</ion-col>
+		  </ion-row>
+		  <ion-row>
+		  	<button ion-button block color="dark" type="submit">Save</button>
+		  </ion-row>
+	  </form>
+	</ion-grid>
+ </div>
 </ion-content>

@@ -13,4 +13,17 @@ page-profile
 		color: #f86c6c;
 		padding-left: 15px;
 	}
+	.upload-images ion-col.images
+	{
+		height: 100px;
+	}
+	.upload-images ion-col.images button
+	{
+		position: absolute;
+		right: 10px;
+		height: 2.6rem;
+		padding: 0px 5px 0px 5px;
+		margin:0;
+		border-radius: 100px;
+	}
 }

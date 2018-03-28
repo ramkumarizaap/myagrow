@@ -17,11 +17,13 @@ export class SignupPage {
   private _passwordIcon : string = "eye-off";
   public country:any;
   public state:any;
+  public check:boolean = false;
 	 constructor(
 	 		private _formBuilder: FormBuilder,public navCtrl: NavController,
 	 		public commonService: CommonService,private alertCtrl: AlertController,
 		private loader:LoadingController) {
      this.commonService.getCountry().then((res)=>{
+         this.check = true;
          this.country = res.country.data;
          this.state = res.state.data;
          console.log(res);

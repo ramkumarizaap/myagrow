@@ -7,8 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { EventsPage } from '../pages/events/events';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
-
-import {GlobalVars} from "../providers/globalVars";
+import { GlobalVars } from '../providers/globalVars';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,14 +24,11 @@ export class MyApp {
     
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Services', component: HomePage,icon:'ios-cog' },
-      { title: 'Events', component: EventsPage,icon:'ios-flag' },
-      { title: 'Login', component: LoginPage,icon:'ios-power'}
-      ];
+    
       this.app.viewWillEnter.subscribe(() => { 
       this.user = this.globalvars.getUserdata();
-      if(this.user)
+      console.log(this.user);
+      if(this.user!=null)
       {
          this.pages = [
               { title: 'Services', component: HomePage,icon:'ios-cog' },
@@ -40,6 +36,14 @@ export class MyApp {
               { title: 'Profile', component: ProfilePage,icon:'ios-person'},
               { title: 'Logout', component: LoginPage,icon:'ios-power'}
               ];
+      }
+      else
+      {
+        this.pages = [
+          { title: 'Services', component: HomePage,icon:'ios-cog' },
+          { title: 'Events', component: EventsPage,icon:'ios-flag' },
+          { title: 'Login', component: LoginPage,icon:'ios-power'}
+          ];
       }
     });
   }

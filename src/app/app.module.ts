@@ -18,6 +18,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import {CommonService} from "../providers/commonService";
 import {GlobalVars} from "../providers/globalVars";
 import { Geolocation } from '@ionic-native/geolocation';
+import { Camera } from '@ionic-native/camera';
 //import { Platform } from 'ionic-angular';
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     CommonService,
     GoogleMaps,
     Geolocation,
+    Camera,
     //Platform,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

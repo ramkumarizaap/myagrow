@@ -72,6 +72,7 @@
 			</ion-item>
 	    <!--COUNTRY END-->
 	    <!--STATE START-->
+	    <div *ngIf = "check">
 			<ion-item>
 	      <ion-label stacked color="transparent">State</ion-label>
 	      <ion-select formControlName="state">
@@ -90,6 +91,7 @@
 	    <ion-item class="login-error" no-lines no-padding *ngIf="_signupFormOne.controls.city.hasError('required') && _signupFormOne.controls.city.touched">
 				<p ion-text text-wrap>Please Enter City</p>
 			</ion-item>
+		</div>
 	    <!--CITY END-->
 	    <!--PHONE START-->
 			<ion-item>

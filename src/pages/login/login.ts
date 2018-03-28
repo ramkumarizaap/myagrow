@@ -24,7 +24,7 @@ export class LoginPage {
       public commonService:CommonService) {
         this.navCtrl =  navCtrl;
         this.menu = menu;
-        this.menu.enable(false, 'myMenu');
+        //this.menu.enable(false, 'myMenu');
       if(this.globalvars.getUserdata())
         this.navCtrl.setRoot(HomePage);
 
