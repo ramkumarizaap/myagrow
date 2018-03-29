@@ -169,40 +169,6 @@ profileLoadForm3()
 		}
 	}
 
-  // services_update()
-  // {
-  // 	if(this._profileForm2.valid)
-		// {
-		// 	console.log(this._profileForm2.value);
-		// 		let load = this.loader.create({
-		// 			content:'Please Wait...'
-		// 		});
-		// 		load.present();
-		// 	this.commonService.saveProfileServices(this._profileForm2.value).then((res)=>{
-		// 		load.dismiss();
-		// 		if(res.status=="success")
-		// 		{
-		// 			let success = this.alertCtrl.create({
-		// 				title:'Success',
-		// 				message:'Profile updated successfully.',
-		// 				buttons:['OK']
-		// 			});
-		// 			success.present();
-		// 		}
-		// 	})
-		// 	.catch((err) => {
-		// 		load.dismiss();
-		// 		let error = this.alertCtrl.create({
-		// 		title:'Error',
-		// 		message:err,
-		// 		buttons:['OK']
-		// 	});
-		// 	error.present();
-		// 	return false;
-		// 	});
-		// }
-  // }
-
 
   CaptureImage()
   {
@@ -308,15 +274,6 @@ profileLoadForm3()
 		            }],
 		          });
 		          success.present();
-
-				// 	let success = this.alertCtrl.create({
-
-				// 		title:'Success',
-				// 		message:'Image uploaded successfully.',
-				// 		buttons:['OK']
-				// 	});
-				// 	success.present();
-				// this.profileLoadForm3();
 				}
 			})
 			.catch((err) => {

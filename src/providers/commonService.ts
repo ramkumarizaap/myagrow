@@ -87,38 +87,6 @@ getWeather(data)
        .toPromise();
   }
 
-
-  //  getProfileDetailsTwo(id) {
-  //   let headers = new Headers();
-  //   let options = new RequestOptions({ headers: headers });
-  //   return this.http.get(apiUrl+'users/select_profile_two?id='+id ,options).map(res => res.json())
-  //      .toPromise();
-  // }
-
- // saveProfileTwo(data) {
- //    let headers = new Headers();
- //    let options = new RequestOptions({ headers: headers });
- //    return this.http.put(apiUrl+'users/profile',data ,options).map(res => res.json())
- //       .toPromise();
- //  }
-
-  // saveProfileServices(data) {
-  //   let headers = new Headers();
-  //   let options = new RequestOptions({ headers: headers });
-  //   return this.http.put(apiUrl+'users/profile_services',data ,options).map(res => res.json())
-  //      .toPromise();
-  // }
-
-
-  //  getProfileDetailsThree(id) {
-  //   // console.log(id);
-  //   let headers = new Headers();
-  //   let options = new RequestOptions({ headers: headers });
-  //   return this.http.get(apiUrl+'users/select_profile_three?id='+id ,options).map(res => res.json())
-  //      .toPromise();
-  // }
-
-
    saveimage(imagedata) {
     let headers = new Headers();
     let options = new RequestOptions({ headers: headers });
