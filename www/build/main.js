@@ -152,10 +152,17 @@ var HomePage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title float-left>Services</ion-title>\n     <ion-item class="bg-weather" float-right>\n      {{this.city}}&nbsp;&nbsp;<span style="font-size: 18px;">{{this.weather}}&deg;C</span>\n    </ion-item>\n   <!-- <img src="assets/imgs/weather.jpg"><div>{{this.city}}&nbsp;&nbsp;{{this.weather}}&deg;C</div> -->\n  </ion-navbar>\n</ion-header>\n\n<ion-content class="card-background-page">\n  <div class="service-search">\n    <form method="post" [formGroup]="_searchForm" novalidate (submit)="search_category()">\n      <div class="login-spacing">\n        <ion-grid>\n          <ion-row class="search-box">\n            <ion-col col-6>\n              <ion-item>\n                <ion-label stacked color="transparent">Select Category</ion-label>\n                <ion-select formControlName="category">\n                   <ion-option *ngFor="let c of category" [value]="c.id">{{c.name}}</ion-option>\n                </ion-select>\n              </ion-item>\n            </ion-col>\n            <ion-col col-6>\n              <ion-item>\n              <!--  <ion-label stacked color="transparent">Enter Location</ion-label> -->\n                <ion-input type="text" formControlName="location" placeholder="Enter Location"></ion-input>\n              </ion-item>\n            </ion-col>\n          </ion-row>\n          <ion-row  class="search-box">\n            <ion-col col-6>\n             <ion-item>\n             <!-- <ion-label stacked color="transparent">Enter Keyword</ion-label> -->\n            <ion-input  type="text" formControlName="keywords" placeholder="Enter Keyword"></ion-input>\n             </ion-item>\n              </ion-col>\n              \n              <ion-col col-6>\n                  <div class="submit-btn">\n                    <button ion-button icon-only color="secondary" (click)="search_category()"> <ion-icon name="search"></ion-icon></button>\n                    <button ion-button icon-only color="danger" (click)="_clearSearch()"> <ion-icon name="md-close"></ion-icon></button>\n                    \n                 </div>\n              </ion-col> \n            </ion-row>\n      </ion-grid>\n      </div>\n    </form>\n  </div>\n  <div class="service-result">\n    <ion-card  *ngFor="let s of services" (click)="openModal(s)">\n    <img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{s.image_name}}" onError="this.src=\'assets/imgs/dummy_img.jpg\';"/>\n    <ion-card-content>\n      <ion-card-title>\n        {{s.title}}\n        </ion-card-title>\n      <p class="description">{{s.description}}</p>\n    </ion-card-content>\n    <ion-row padding>\n      <ion-col class="address">\n          <ion-icon name=\'ios-pin\'></ion-icon>\n          {{s.address}}\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col text-right>\n        <button ion-button  clear small color="danger" icon-start>\n          <ion-icon name=\'share-alt\'></ion-icon>\n          More Details\n        </button>\n      </ion-col>\n    </ion-row>\n    </ion-card>\n  </div>\n  <ion-row *ngIf="count <= 0" style="margin-top:140px;">\n    <ion-item >No Records Found.</ion-item>\n    </ion-row>\n  <!-- <ion-item *ngIf="services==null || count <= 0 ">No Records Found.</ion-item> -->\n  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)"  *ngIf="count < 2">\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll> -->\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _j || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_commonService__["a" /* CommonService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_4__ionic_native_geolocation__["a" /* Geolocation */]])
     ], HomePage);
     return HomePage;
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 var ModalContentPage = (function () {
@@ -171,10 +178,9 @@ var ModalContentPage = (function () {
     ModalContentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\modal.html"*/'<ion-header>\n\n  <ion-toolbar>\n\n    <ion-title>\n\n      {{service.title}}\n\n    </ion-title>\n\n    <ion-buttons start>\n\n      <button ion-button (click)="dismiss()">\n\n        <span ion-text color="primary"  showWhen="ios">Cancel</span>\n\n        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n	<ion-list padding>\n\n		<p><ion-icon name="pin"></ion-icon> {{service.address}}</p>\n\n		<img src="http://162.144.41.156/~izaapinn/agdemo/admin/uploads/services/{{service.image_name}}" onError="this.src=\'../assets/imgs/dummy_img.jpg\';"/>\n\n		<button type="button" block ion-button color="secondary">Price : ${{service.price}}</button>\n\n		<p>{{service.description}}</p>\n\n		<ion-item>\n\n		  Phone\n\n		  <ion-badge color="dark" item-end>{{service.phone}}</ion-badge>\n\n		</ion-item>\n\n		<ion-item>\n\n		  Status\n\n		  <ion-badge item-end>{{service.status}}</ion-badge>\n\n		</ion-item>\n\n	</ion-list>\n\n\n\n  <!--<ion-segment [(ngModel)]="desc">\n\n    <ion-segment-button value="add">\n\n      ADD. Info\n\n    </ion-segment-button>\n\n    <ion-segment-button value="products">\n\n      Related Products\n\n    </ion-segment-button>\n\n    <ion-segment-button value="reviews">\n\n      Reviews\n\n    </ion-segment-button>\n\n  </ion-segment>\n\n  <div [ngSwitch]="desc">\n\n  <ion-list *ngSwitchCase="\'add\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-puppy-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Ruby</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n\n\n  <ion-list *ngSwitchCase="\'products\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n  <ion-list *ngSwitchCase="\'reviews\'">\n\n    <ion-item>\n\n      <ion-thumbnail item-start>\n\n        <img src="img/thumbnail-kitten-1.jpg">\n\n      </ion-thumbnail>\n\n      <h2>Luna</h2>\n\n    </ion-item>\n\n  </ion-list>\n\n</div>-->\n\n</ion-content>'/*ion-inline-end:"C:\Users\IZ-Nirmal\myagrow\src\pages\home\modal.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */]])
     ], ModalContentPage);
     return ModalContentPage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -936,39 +942,6 @@ var ProfilePage = (function () {
             });
         }
     };
-    // services_update()
-    // {
-    // 	if(this._profileForm2.valid)
-    // {
-    // 	console.log(this._profileForm2.value);
-    // 		let load = this.loader.create({
-    // 			content:'Please Wait...'
-    // 		});
-    // 		load.present();
-    // 	this.commonService.saveProfileServices(this._profileForm2.value).then((res)=>{
-    // 		load.dismiss();
-    // 		if(res.status=="success")
-    // 		{
-    // 			let success = this.alertCtrl.create({
-    // 				title:'Success',
-    // 				message:'Profile updated successfully.',
-    // 				buttons:['OK']
-    // 			});
-    // 			success.present();
-    // 		}
-    // 	})
-    // 	.catch((err) => {
-    // 		load.dismiss();
-    // 		let error = this.alertCtrl.create({
-    // 		title:'Error',
-    // 		message:err,
-    // 		buttons:['OK']
-    // 	});
-    // 	error.present();
-    // 	return false;
-    // 	});
-    // }
-    // }
     ProfilePage.prototype.CaptureImage = function () {
         var _this = this;
         var actionSheet = this.actionSheetCtrl.create({
@@ -1062,13 +1035,6 @@ var ProfilePage = (function () {
                         }],
                 });
                 success.present();
-                // 	let success = this.alertCtrl.create({
-                // 		title:'Success',
-                // 		message:'Image uploaded successfully.',
-                // 		buttons:['OK']
-                // 	});
-                // 	success.present();
-                // this.profileLoadForm3();
             }
         })
             .catch(function (err) {
@@ -1483,31 +1449,6 @@ var CommonService = (function () {
         return this.http.get(apiUrl + 'users/search_records?cat=' + data.category + '&loc=' + data.location + '&key=' + data.keywords, options).map(function (res) { return res.json(); })
             .toPromise();
     };
-    //  getProfileDetailsTwo(id) {
-    //   let headers = new Headers();
-    //   let options = new RequestOptions({ headers: headers });
-    //   return this.http.get(apiUrl+'users/select_profile_two?id='+id ,options).map(res => res.json())
-    //      .toPromise();
-    // }
-    // saveProfileTwo(data) {
-    //    let headers = new Headers();
-    //    let options = new RequestOptions({ headers: headers });
-    //    return this.http.put(apiUrl+'users/profile',data ,options).map(res => res.json())
-    //       .toPromise();
-    //  }
-    // saveProfileServices(data) {
-    //   let headers = new Headers();
-    //   let options = new RequestOptions({ headers: headers });
-    //   return this.http.put(apiUrl+'users/profile_services',data ,options).map(res => res.json())
-    //      .toPromise();
-    // }
-    //  getProfileDetailsThree(id) {
-    //   // console.log(id);
-    //   let headers = new Headers();
-    //   let options = new RequestOptions({ headers: headers });
-    //   return this.http.get(apiUrl+'users/select_profile_three?id='+id ,options).map(res => res.json())
-    //      .toPromise();
-    // }
     CommonService.prototype.saveimage = function (imagedata) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
