@@ -149,6 +149,10 @@ export class HomePage implements OnInit{
 
   _clearSearch()
   {
+    let param:any = this._searchForm.value;
+    //console.log(param);
+     if(param.category=='' && param.location=='' && param.keywords=='')
+       return false;
     this.ngOnInit();
     this.getServices();
   }
